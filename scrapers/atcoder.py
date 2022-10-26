@@ -28,4 +28,7 @@ def getUserInfo(username):
     )
     totalSolved = requests.get(URL).json()["count"]
 
-    return int(rank), int(rating), int(totalSolved)
+    return rank, rating, int(totalSolved)
+
+
+print(getUserInfo("chroot"))

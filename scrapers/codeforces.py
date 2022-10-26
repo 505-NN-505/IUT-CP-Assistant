@@ -22,4 +22,4 @@ def getUserInfo(username):
         .strip()
     )
 
-    return rank, rating, totalSolved
+    return rank, rating, int(totalSolved)
