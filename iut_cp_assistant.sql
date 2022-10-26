@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2022 at 10:09 AM
+-- Generation Time: Oct 26, 2022 at 10:26 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -85,7 +85,8 @@ CREATE TABLE `user_table` (
 -- Indexes for table `table_atcoder`
 --
 ALTER TABLE `table_atcoder`
-  ADD PRIMARY KEY (`handle`);
+  ADD PRIMARY KEY (`handle`),
+  ADD KEY `fk_id_atcoder` (`id`);
 
 --
 -- Indexes for table `table_codeforces`
@@ -93,6 +94,13 @@ ALTER TABLE `table_atcoder`
 ALTER TABLE `table_codeforces`
   ADD PRIMARY KEY (`handle`),
   ADD KEY `fk_id_codeforces` (`id`);
+
+--
+-- Indexes for table `table_vjudge`
+--
+ALTER TABLE `table_vjudge`
+  ADD PRIMARY KEY (`handle`),
+  ADD KEY `fk_id_vjudge` (`id`);
 
 --
 -- Indexes for table `user_table`
@@ -105,10 +113,22 @@ ALTER TABLE `user_table`
 --
 
 --
+-- Constraints for table `table_atcoder`
+--
+ALTER TABLE `table_atcoder`
+  ADD CONSTRAINT `fk_id_atcoder` FOREIGN KEY (`id`) REFERENCES `user_table` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `table_codeforces`
 --
 ALTER TABLE `table_codeforces`
   ADD CONSTRAINT `fk_id_codeforces` FOREIGN KEY (`id`) REFERENCES `user_table` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `table_vjudge`
+--
+ALTER TABLE `table_vjudge`
+  ADD CONSTRAINT `fk_id_vjudge` FOREIGN KEY (`id`) REFERENCES `user_table` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
