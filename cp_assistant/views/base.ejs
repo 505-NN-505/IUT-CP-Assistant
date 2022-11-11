@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUT CP Assistant</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600;700&display=swap"rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <section class="header">
+        <nav>
+            <a href="index.html"><img src="/images/logo.png"> </a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                <ul>
+                    <li><a href="">HOME</a></li>
+                    <li><a href="">STANDING</a></li>
+                    <li><a href="">PROFILE</a></li>
+                    <li><a href="/route/homelogin">LOGIN</a></li>
+                    <!-- <a href="/login" class="nav-item nav-link">Doctor</a> -->
+                    <li><a href="">ABOUT</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+            <!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+        </nav>
+        <div class="text-box">
+            <h1>IUT CP Assistant</h1>
+            <p>This is a website where you could check the 
+                overall ranking of all the participants in 
+                different <br> online competitve programming contest
+                hosting site. 
+            </p>
+            <a href="" class="hero-btn">Visit Us To Know More</a>
+        </div>
+    </section>
+
+    <!-- Standing -->
+    <section class="standings">
+        <h1>Top Students</h1>
+        <p>This section shows the standings of top students in all the platforms.</p>
+
+        <div class="row">
+            <div class="standings-col">
+                <h3>Codeforces</h3>
+                <p>This division is for the students standings in Codeforces.</p>
+            </div>
+            <div class="standings-col">
+                <h3>Codechef</h3>
+                <p>This division is for the students standings in Codechef.</p>
+            </div>
+            <div class="standings-col">
+                <h3>Overall</h3>
+                <p>This division is for the students standings in in all platforms.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile -->
+    <section class="profile">
+        <h1>Your Profile</h1>
+        <p>This section displays the profile of the user.</p>
+
+        <div class="row">
+            <div class="profile-col">
+                <h3>Codeforces</h3>
+                <p>This division is for your ratings in Codeforces.</p>
+            </div>
+            <div class="profile-col">
+                <h3>Codechef</h3>
+                <p>This division is for your ratings in Codechef.</p>
+            </div>
+            <div class="profile-col">
+                <h3>Overall</h3>
+                <p>This division is for the your ratings in all platforms.</p>
+            </div>
+        </div>
+    </section>
+
+    <!------ Footer ----- -->
+    <section class="footer">
+        <h4> About Us</h4>
+        <p>IUT-CP_ASSISTANT is a web based application for creating an
+            overall standings of the students based on their rankings
+            in different online competitve programming platformsIn this
+            site, the users can  <br>see all the updated rankings in different
+            sites all at once which eases the complexity of visiting 
+            different sites to check the performances of the students.
+        </p>
+        <div class="icons">
+             <i class="fa fa-facebook"></i>
+             <i class="fa fa-twitter"></i>
+             <i class="fa fa-instagram"></i>
+             <i class="fa fa-linkedin"></i>
+
+             <p><i class="fa fa-copyright"></i>All Rights Reserverd By</p>
+        </div>
+    </section>
+
+
+    
+    <!-- JavaScript for Toggle Menu -->
+    <script>
+        var navLinks = document.getElementById("navLinks");
+        function showMenu(){
+            navLinks.style.right = "0";
+        }
+
+        function hideMenu(){
+            navLinks.style.right = "-300px";
+        }
+    </script>
+</body>
+</html>

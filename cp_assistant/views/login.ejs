@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script
+        src="https://kit.fontawesome.com/64d58efce2.js"
+        crossorigin="anonymous">
+    </script>
+    <title>Sign In and Sign Up Form</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <section class="header">
+        <nav>
+            <a href="/route/logout"><img src="/images/logo.png"> </a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                <ul>
+                    <li><a href="/route/logout">HOME</a></li>
+                    <li><a href="">STANDING</a></li>
+                    <li><a href="/route/all">view all</a></li>
+                    <!-- <li><a href="login.html">LOGIN</a></li> -->
+                    <li><a href="">ABOUT</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+            <!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+        </nav>
+    </section>
+
+    
+    <div class="container">    
+        <div class="forms-container">
+            <div class="signin-signup">
+                <form action="/route/login" method="POST" class="signin-form">
+                    <!-- <h2 class="title">Sign In</h2> -->
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="number" placeholder="Student ID" name="student_ID">
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Password" name="password">
+                    </div>
+                    <input type="submit" value="Login" class="btn solid">
+                </form>
+                <!-- <form action=""  class="pt-3">
+                    <h2 class="title">Sign Up</h2> -->
+                    <!-- <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="number" placeholder="Student ID" name="studentID">
+                    </div>
+                    <div class="input-field">
+                      <i class="fas fa-lock"></i>
+                     <input type="password" placeholder="Password" name="password"> -->
+                      <!-- </div>
+                        <div class="input-field">
+                      <i class="fas fa-lock"></i>
+                        <input type="text" placeholder="Confirm Password" name="cpassword">
+                        </div> -->
+            <!-- <div class="input-field">
+                <i class="fas fa-user-circle"></i>
+                <input type="text" placeholder="Codeforces Handle" name="cf_handle">
+            </div> -->
+            <!-- <div class="input-field">
+                <i class="fas fa-user-circle"></i>
+                <input type="text" placeholder="At Coder Username" name="atcoder_username">
+            </div> -->
+            <!-- <div class="input-field">
+                <i class="fas fa-user-circle"></i>
+                <input type="text" placeholder="VJudge Username" name="vjudge_username">
+                    </div>
+                    <input type="submit" value="Sign Up" class="btn solid">
+                </form>
+            </div> -->
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>New Here?</h3>
+                    <p>If You Don't Have Any Account Click The Sign Up Button And Create An Account</p>
+                    <!--  -->
+                    <!-- signup button in login page -->
+                    <!--  -->
+                    <form action="/route/signup" method="GET" >
+                    <button class="btn transparent" id="sign-up-btn">Sign Up</button>
+                    </form>
+                </div>
+                <img src="images/log2.png" class="image" alt="">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>One Of Us ?</h3>
+                    <p>If You Already Have An Account Click The Sign In Button To Login To The Website</p>
+                    <button class="btn transparent" id="sign-in-btn">Sign In</button>
+                </div>
+
+                <img src="images/registar2.png" class="image" alt="">
+            </div>
+        </div>
+    </div>
+
+    <script src="/any.js"></script>
+</body>
+</html>
