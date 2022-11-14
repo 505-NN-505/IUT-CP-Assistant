@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
 
+let id_now = "-1";
 
 var router = express()
 
@@ -80,8 +81,48 @@ router.post('/login', (req, res)=>{
         if(req.body.password!=rows[0].password)
             res.end("Wrong Password");
         console.log('The data from user table: \n', rows);
+        id_now = req.body.student_ID;
+        console.log(id_now);
         res.render('base_logout');
     });
+})
+
+
+router.get('/profile', (req, res)=>{
+
+    if(id_now=="-1")
+        res.end("Need to login first");
+
+    else{
+    const sql = `select rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    let query = db.query(sql, (err, rows) => {
+        if (err) throw err;
+
+        //res.send(results);
+        // res.render("doctors", {
+        //     title: "Doctor",
+        //     data: results,
+        // })
+        console.log('cf_rating: ', rows[0].rating);
+        console.log('cf_rank: ', rows[0].rank);
+        console.log('cf_solve_count: ', rows[0].solve_count);
+    });
+
+    const sql1 = `select rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    let query1 = db.query(sql1, (err, rows) => {
+        if (err) throw err;
+
+        //res.send(results);
+        // res.render("doctors", {
+        //     title: "Doctor",
+        //     data: results,
+        // })
+        console.log('atcoder_rating: ', rows[0].rating);
+        console.log('atcoder_rank: ', rows[0].rank);
+        console.log('atcoder_solve_count: ', rows[0].solve_count);
+        res.render('base');
+    });
+    }
 })
 
 
