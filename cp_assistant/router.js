@@ -112,6 +112,11 @@ router.get('/aftersignup', (req, res) => {
     res.render('base')
 })
 
+router.get('/profile', (req, res) => {
+   
+    res.render('profile')
+})
+
 //
 
 router.post('/signup_with_Data', (req, res) => {
