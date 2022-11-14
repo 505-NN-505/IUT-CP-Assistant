@@ -83,18 +83,32 @@ router.post('/login', (req, res)=>{
         console.log('The data from user table: \n', rows);
         id_now = req.body.student_ID;
         console.log(id_now);
-        res.render('base_logout');
+        // res.render('base_logout');
+
+        res.render('base_logout' , {
+            userID: id_now,
+         });
     });
 })
 
 
 router.get('/profile', (req, res)=>{
 
+    let cfHandle;
+    let cfRating;
+    let cfRank;
+    let cfSolveCount;
+    let atCoderHandle;
+    let atCoderRating;
+    let atCoderRank;
+    let atCoderSolveCount;
+
+
     if(id_now=="-1")
         res.end("Need to login first");
 
     else{
-    const sql = `select rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -106,9 +120,14 @@ router.get('/profile', (req, res)=>{
         console.log('cf_rating: ', rows[0].rating);
         console.log('cf_rank: ', rows[0].rank);
         console.log('cf_solve_count: ', rows[0].solve_count);
+        
+        cfHandle = rows[0].handle;
+        cfRating =  rows[0].rating;
+        cfRank =  rows[0].rank;
+        cfSolveCount = rows[0].solve_count;
     });
 
-    const sql1 = `select rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
     let query1 = db.query(sql1, (err, rows) => {
         if (err) throw err;
 
@@ -120,7 +139,25 @@ router.get('/profile', (req, res)=>{
         console.log('atcoder_rating: ', rows[0].rating);
         console.log('atcoder_rank: ', rows[0].rank);
         console.log('atcoder_solve_count: ', rows[0].solve_count);
-        res.render('base');
+
+        atCoderHandle = rows[0].handle;
+        atCoderRating =  rows[0].rating;
+        atCoderRank =  rows[0].rank;
+        atCoderSolveCount = rows[0].solve_count;
+
+        // res.render('base');
+         res.render('profile' , {
+            userID: id_now,
+            cfHandle,
+            cfRating,
+            cfRank,
+            cfSolveCount,
+            atCoderHandle,
+            atCoderRating,
+            atCoderRank,
+            atCoderSolveCount,
+         });
+        
     });
     }
 })
@@ -151,11 +188,6 @@ router.get('/homelogin', (req, res) => {
 router.get('/aftersignup', (req, res) => {
    
     res.render('base')
-})
-
-router.get('/profile', (req, res) => {
-   
-    res.render('profile')
 })
 
 //
