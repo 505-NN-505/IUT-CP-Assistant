@@ -98,10 +98,14 @@ router.get('/profile', (req, res)=>{
     let cfRating;
     let cfRank;
     let cfSolveCount;
+    let cfHandleLink = "codeforces.com/profile/";
+
     let atCoderHandle;
     let atCoderRating;
     let atCoderRank;
     let atCoderSolveCount;
+    let atcoderHandleLink = "atcoder.jp/users/";
+
 
 
     if(id_now=="-1")
@@ -125,6 +129,9 @@ router.get('/profile', (req, res)=>{
         cfRating =  rows[0].rating;
         cfRank =  rows[0].rank;
         cfSolveCount = rows[0].solve_count;
+        cfHandleLink  += rows[0].handle;
+
+        console.log(cfHandleLink);
     });
 
     const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
@@ -144,6 +151,9 @@ router.get('/profile', (req, res)=>{
         atCoderRating =  rows[0].rating;
         atCoderRank =  rows[0].rank;
         atCoderSolveCount = rows[0].solve_count;
+        atcoderHandleLink  += rows[0].handle;
+
+        console.log(atcoderHandleLink);
 
         // res.render('base');
          res.render('profile' , {
@@ -165,7 +175,7 @@ router.get('/profile', (req, res)=>{
 
 
 // route for dashboard
-router.get('/base_logout', (req, res) => {
+router.post('/base_logout', (req, res) => {
    
         res.render('base_logout')
 })
@@ -178,6 +188,13 @@ router.get('/signup', (req, res) => {
 router.get('/logout', (req, res) => {
    
     res.render('base')
+})
+
+router.get('/from_profile', (req, res) => {
+   
+    res.render('base_logout' , {
+        userID: id_now,
+     });
 })
 
 router.get('/homelogin', (req, res) => {
