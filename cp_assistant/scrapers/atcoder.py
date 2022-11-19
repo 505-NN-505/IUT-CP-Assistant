@@ -9,6 +9,8 @@ def getUserInfo(username):
         "html.parser",
     )
 
+    
+
     rank = (
         soup.find(class_="dl-table mt-2").find("tr").find("td").get_text().strip("th")
     )

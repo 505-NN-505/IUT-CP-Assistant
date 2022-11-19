@@ -9,11 +9,13 @@ import re
 import sys
 import json
 
+
 # users = ["Shahriar118", "IAlsoHateMyself", "chroot_", "_labib", "ssshanto"]
 
 # for user in users:
 #     print(codeforces.getUserInfo(user))
-#     #print(atcoder.getUserInfo(user))
+#     print(atcoder.getUserInfo(user))
 
 username = sys.argv[1]
- print(codeforces.getUserInfo(username))
+
+print(codeforces.getUserInfo(username))

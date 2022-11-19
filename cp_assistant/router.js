@@ -3,6 +3,8 @@ var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
 
+let {PythonShell} = require('python-shell')
+
 let id_now = "-1";
 let msg =null ;
 
@@ -70,19 +72,20 @@ const  credential = {
 router.post('/login', (req, res)=>{
     const sql = `select password from user_table where id='${req.body.student_ID}'`;
     let query = db.query(sql, (err, rows) => {
-        //if (err) throw err;
 
         //res.send(results);
         // res.render("doctors", {
         //     title: "Doctor",
         //     data: results,
         // })
+        
+        //console.log(rows[0].password);
+       
         if(rows.length==0){
             // res.end("User do not exist");
             res.render('login' , {
                 msg: 'User does not exist',
              });
-             return;
         }
         
         else if(req.body.password!=rows[0].password){
@@ -249,7 +252,9 @@ router.post('/signup_with_Data', (req, res) => {
         //  res.end("Passwords do not match");
     }
 
-    const sql = `INSERT INTO user_table (id, password, handle_codeforces, handle_atcoder, handle_vjudge) VALUES ('${req.body.studentID}', '${req.body.cpassword}', '${req.body.cf_handle}', '${req.body.atcoder_username}','${req.body.vjudge_username}')`;
+    id_now = req.body.student_ID;
+
+    const sql = `INSERT INTO user_table (id, password, handle_codeforces, handle_atcoder, handle_vjudge) VALUES ('${req.body.studentID}', '${req.body.cpassword}', '${req.body.cf_handle}', '${req.body.atcoder_username}','${req.body.name}')`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -263,8 +268,37 @@ router.post('/signup_with_Data', (req, res) => {
 
     });
   
-    res.render('base_logout')
-})
+
+    ///////
+    let options = {
+        
+        args:[req.body.cf_handle]
+    }
+    console.log("innnnn");
+
+    PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
+        if (err) {
+            console.log("ERRROR!");
+            console.log(err);
+        } else {
+            console.log("LENGTH IS: ", results.length)
+            const data= JSON.parse(results[0]);
+            //const data = results[0];
+           //console.log(data.titlePhoto);
+           // res.send(data);
+            console.log(results);
+            console.log("rank: ",data.rank);
+            console.log("rating: ",data.rating+1000);
+        }
+    })
+
+
+    ////////
+   // res.render('base_logout')
+    res.render('base_logout' , {
+        userID: id_now,
+     });
+});
 
 router.get('/all', (req, res) => {
     let sql = `select * from user_table`;
@@ -279,6 +313,42 @@ router.get('/all', (req, res) => {
 
     });
     //res.render("doctors", {});
+})
+
+
+
+// route for dashboard
+router.post('/base_logout', (req, res) => {
+   
+    res.render('base_logout')
+})
+
+router.get('/signup', (req, res) => {
+
+res.render('signup')
+})
+
+router.get('/logout', (req, res) => {
+
+res.render('base')
+id_now = "-1";
+})
+
+router.get('/from_profile', (req, res) => {
+
+res.render('base_logout' , {
+    userID: id_now,
+ });
+})
+
+router.get('/homelogin', (req, res) => {
+
+res.render('login')
+})
+
+router.get('/aftersignup', (req, res) => {
+
+res.render('base')
 })
 
 
