@@ -6,6 +6,7 @@ const mysql = require('mysql');
 let {PythonShell} = require('python-shell')
 
 let id_now = "-1";
+let msg =null ;
 
 var router = express()
 
@@ -83,6 +84,20 @@ router.post('/login', (req, res)=>{
         console.log(rows[0].password);
         if(req.body.password!=rows[0].password)
             res.end("Wrong Password");
+        if(rows.length==0){
+            // res.end("User do not exist");
+            res.render('login' , {
+                msg: 'User does not exist',
+             });
+        }
+        
+        if(req.body.password!=rows[0].password){
+            // res.end("Wrong Password");
+            res.render('login' , {
+                msg: 'Wrong Password!  Please enter the correct password.',
+             });
+
+        }
         console.log('The data from user table: \n', rows);
         id_now = req.body.student_ID;
         console.log(id_now);
@@ -158,17 +173,19 @@ router.get('/profile', (req, res)=>{
 
         console.log(atcoderHandleLink);
 
-        // res.render('base');
+
          res.render('profile' , {
             userID: id_now,
             cfHandle,
             cfRating,
             cfRank,
             cfSolveCount,
+            cfHandleLink,
             atCoderHandle,
             atCoderRating,
             atCoderRank,
             atCoderSolveCount,
+            atcoderHandleLink,
          });
         
     });
@@ -177,6 +194,44 @@ router.get('/profile', (req, res)=>{
 
 
 
+// route for dashboard
+router.post('/base_logout', (req, res) => {
+   
+        res.render('base_logout')
+})
+
+router.get('/signup', (req, res) => {
+   
+    res.render('signup' , {
+        msg: null
+     });
+})
+
+router.get('/logout', (req, res) => {
+   
+    res.render('base')
+})
+
+router.get('/from_profile', (req, res) => {
+   
+    res.render('base_logout' , {
+        userID: id_now,
+     });
+})
+
+router.get('/homelogin', (req, res) => {
+   
+    // res.render('login')
+    res.render('login' , {
+        msg: null
+     });
+
+})
+
+router.get('/aftersignup', (req, res) => {
+   
+    res.render('base')
+})
 
 //
 
@@ -184,11 +239,19 @@ router.post('/signup_with_Data', (req, res) => {
 
     console.log('Input:: name='+JSON.stringify(req.body.studentID)+' age='+ JSON.stringify(req.body.cpassword) +' city='+ req.body.cf_handle + ' dep=' + req.body.atcoder_username);
     console.log(req.body);
-    if(req.body.password.length<8)
-        res.end("Password must be 8 chars long");
+    if(req.body.password.length<8){
+        //res.end("Password must be 8 chars long");
+        res.render('signup' , {
+            msg: 'Password must be 8 characters long.',
+         });
+    }
 
-    if(req.body.password!=req.body.cpassword)
-        res.end("Passwords do not match");
+    if(req.body.password!=req.body.cpassword){
+        res.render('signup' , {
+            msg: 'Password do not match',
+         });
+        //  res.end("Passwords do not match");
+    }
 
     id_now = req.body.student_ID;
 
