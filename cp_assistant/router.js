@@ -4,6 +4,7 @@ var router = express.Router();
 const mysql = require('mysql');
 
 let id_now = "-1";
+let msg =null ;
 
 var router = express()
 
@@ -76,10 +77,20 @@ router.post('/login', (req, res)=>{
         //     title: "Doctor",
         //     data: results,
         // })
-        if(rows.length==0)
-            res.end("User do not exist");
-        if(req.body.password!=rows[0].password)
-            res.end("Wrong Password");
+        if(rows.length==0){
+            // res.end("User do not exist");
+            res.render('login' , {
+                msg: 'User does not exist',
+             });
+        }
+        
+        if(req.body.password!=rows[0].password){
+            // res.end("Wrong Password");
+            res.render('login' , {
+                msg: 'Wrong Password!  Please enter the correct password.',
+             });
+
+        }
         console.log('The data from user table: \n', rows);
         id_now = req.body.student_ID;
         console.log(id_now);
@@ -184,7 +195,9 @@ router.post('/base_logout', (req, res) => {
 
 router.get('/signup', (req, res) => {
    
-    res.render('signup')
+    res.render('signup' , {
+        msg: null
+     });
 })
 
 router.get('/logout', (req, res) => {
@@ -201,7 +214,11 @@ router.get('/from_profile', (req, res) => {
 
 router.get('/homelogin', (req, res) => {
    
-    res.render('login')
+    // res.render('login')
+    res.render('login' , {
+        msg: null
+     });
+
 })
 
 router.get('/aftersignup', (req, res) => {
@@ -215,11 +232,19 @@ router.post('/signup_with_Data', (req, res) => {
 
     console.log('Input:: name='+JSON.stringify(req.body.studentID)+' age='+ JSON.stringify(req.body.cpassword) +' city='+ req.body.cf_handle + ' dep=' + req.body.atcoder_username);
     console.log(req.body);
-    if(req.body.password.length<8)
-        res.end("Password must be 8 chars long");
+    if(req.body.password.length<8){
+        //res.end("Password must be 8 chars long");
+        res.render('signup' , {
+            msg: 'Password must be 8 characters long.',
+         });
+    }
 
-    if(req.body.password!=req.body.cpassword)
-        res.end("Passwords do not match");
+    if(req.body.password!=req.body.cpassword){
+        res.render('signup' , {
+            msg: 'Password do not match',
+         });
+        //  res.end("Passwords do not match");
+    }
 
     const sql = `INSERT INTO user_table (id, password, handle_codeforces, handle_atcoder, handle_vjudge) VALUES ('${req.body.studentID}', '${req.body.cpassword}', '${req.body.cf_handle}', '${req.body.atcoder_username}','${req.body.vjudge_username}')`;
     let query = db.query(sql, (err, rows) => {
