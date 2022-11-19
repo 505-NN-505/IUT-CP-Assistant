@@ -72,32 +72,32 @@ const  credential = {
 router.post('/login', (req, res)=>{
     const sql = `select password from user_table where id='${req.body.student_ID}'`;
     let query = db.query(sql, (err, rows) => {
-        if (err) throw err;
+       // if (err) throw err;
 
         //res.send(results);
         // res.render("doctors", {
         //     title: "Doctor",
         //     data: results,
         // })
-        if(rows.length==0)
-            res.end("User do not exist");
+        
         console.log(rows[0].password);
-        if(req.body.password!=rows[0].password)
-            res.end("Wrong Password");
+       
         if(rows.length==0){
             // res.end("User do not exist");
             res.render('login' , {
                 msg: 'User does not exist',
              });
+             return;
         }
         
-        if(req.body.password!=rows[0].password){
+        else if(req.body.password!=rows[0].password){
             // res.end("Wrong Password");
             res.render('login' , {
                 msg: 'Wrong Password!  Please enter the correct password.',
              });
 
         }
+        else{
         console.log('The data from user table: \n', rows);
         id_now = req.body.student_ID;
         console.log(id_now);
@@ -106,6 +106,7 @@ router.post('/login', (req, res)=>{
         res.render('base_logout' , {
             userID: id_now,
          });
+        }
     });
 })
 
