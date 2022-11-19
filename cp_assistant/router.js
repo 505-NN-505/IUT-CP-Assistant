@@ -155,17 +155,19 @@ router.get('/profile', (req, res)=>{
 
         console.log(atcoderHandleLink);
 
-        // res.render('base');
+
          res.render('profile' , {
             userID: id_now,
             cfHandle,
             cfRating,
             cfRank,
             cfSolveCount,
+            cfHandleLink,
             atCoderHandle,
             atCoderRating,
             atCoderRank,
             atCoderSolveCount,
+            atcoderHandleLink,
          });
         
     });
