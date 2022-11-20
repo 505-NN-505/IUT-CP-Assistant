@@ -280,10 +280,18 @@ router.post('/signup_with_Data', (req, res) => {
         
         args:[req.body.cf_handle]
     }
+
+    let at_options = {
+        
+        args:[req.body.atcoder_username]
+    }
     console.log("innnnn");
 
     let cf_rating=0;
     let cf_solve_count=0;
+
+    let at_rating=0;
+    let at_solve_count=0;
     
 
     PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
@@ -326,7 +334,25 @@ router.post('/signup_with_Data', (req, res) => {
 
   
 
-    
+    PythonShell.run("scrapers/atcoder_stat.py", options, function(err, results) {
+        if (err) {
+            console.log("ERRROR!");
+            console.log(err);
+        } else {
+            console.log("LENGTH IS: ", results.length)
+            const data= JSON.parse(results[0]);
+            //const data = results[0];
+           //console.log(data.titlePhoto);
+           // res.send(data);
+            console.log(results);
+            // console.log("rank: ",data.rank);
+            //  console.log("sc: ",data.solved_count);
+            // cf_solve_count=data.solved_count;
+            //console.log(rating);
+            //  points = cf_rating+cf_solve_count;
+            //  console.log('pointssss',points);
+        }
+    })
 
     
     
