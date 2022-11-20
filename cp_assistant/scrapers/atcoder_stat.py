@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re
 import sys
 
-username = sys.argv[1]
+#username = sys.argv[1]
 
 class AtCoderScrapper:
 
@@ -22,7 +22,7 @@ class AtCoderScrapper:
         others_count = 0
         for item in req:
             verdict = item['result']
-            print(item['result'])
+           # print(item['result'])
             if verdict == 'AC':
                 ac_count = ac_count + 1
             elif verdict == 'WA':
@@ -38,15 +38,16 @@ class AtCoderScrapper:
             else:
                 others_count = others_count + 1
         return {
-            'platform': 'atcoder',
-            'user_name': username,
-            'solved_count': ac_count,
-            'wrong_answer_count': wa_count,
-            'time_limit_exceeded_count': tle_count,
-            'memory_limit_exceeded_count': mle_count,
-            'runtime_error_count': rte_count,
-            'compilation_error_count': cpe_count,
-            'other_verdict_count': others_count
+            #'platform': 'atcoder',
+            #'user_name': username,
+            #'solved_count': ac_count
+            ac_count
+            #'wrong_answer_count': wa_count,
+            #'time_limit_exceeded_count': tle_count,
+            #'memory_limit_exceeded_count': mle_count,
+            #'runtime_error_count': rte_count,
+            #'compilation_error_count': cpe_count,
+            #'other_verdict_count': others_count
         }
 
     def onlyRated(self, his):
@@ -80,12 +81,23 @@ if __name__ == '__main__':
     print('START RUNNING ATCODER SCRAPPER SCRIPT\n')
     atcoder_scrapper = AtCoderScrapper()
     # resp = spoj_scrapper.get_user_info('tarango_khan')
-    #resp = atcoder_scrapper.get_user_submission_count('fsshakkhor')
+    resp = atcoder_scrapper.get_user_submission_count(sys.argv[1])
+
+    for item1 in resp:
+        sc = (item1)
+    print(sc)
     #print(resp)
-    lol1,lol2 = atcoder_scrapper.get_user_ratings(username)
+
+    lol1,lol2 = atcoder_scrapper.get_user_ratings(sys.argv[1])
+    #lol1,lol2 = atcoder_scrapper.get_user_submission_count('shahriar118')
+
     #print(lol1)
     #print(lol2)
-    ratings = []
+    #ratings = []
+    #for item in lol2:
+     #   ratings.append(item['NewRating'])
+    # print(ratings)
+
     for item in lol2:
-        ratings.append(item['NewRating'])
+        ratings = (item['NewRating'])
     print(ratings)

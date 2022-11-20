@@ -327,30 +327,31 @@ router.post('/signup_with_Data', (req, res) => {
              console.log("sc: ",data.solved_count);
             cf_solve_count=data.solved_count;
             //console.log(rating);
-             points = cf_rating+cf_solve_count;
+             points += cf_rating+cf_solve_count;
              console.log('pointssss',points);
         }
     })
 
   
 
-    PythonShell.run("scrapers/atcoder_stat.py", options, function(err, results) {
+    PythonShell.run("scrapers/atcoder_stat.py", at_options, function(err, results) {
         if (err) {
             console.log("ERRROR!");
             console.log(err);
         } else {
-            console.log("LENGTH IS: ", results.length)
-            const data= JSON.parse(results[0]);
+            console.log("LENGTH IS atcoder: ", results.length)
+           // const data= JSON.parse(results[1]);
             //const data = results[0];
-           //console.log(data.titlePhoto);
-           // res.send(data);
-            console.log(results);
-            // console.log("rank: ",data.rank);
-            //  console.log("sc: ",data.solved_count);
-            // cf_solve_count=data.solved_count;
-            //console.log(rating);
-            //  points = cf_rating+cf_solve_count;
-            //  console.log('pointssss',points);
+            console.log(results[0]);
+            console.log(results[1]);
+            console.log(results[2]);
+            //res.send(data);
+            at_solve_count = parseInt(results[1]);
+            at_rating = parseInt(results[2]);
+            //console.log('solved_at',at_solve_count+1000);
+            //console.log('rating_at',at_rating+1000);
+            points += at_solve_count + at_rating;
+            console.log('from atcoder: ',points)
         }
     })
 
@@ -401,6 +402,16 @@ router.get('/standings', (req, res) => {
         }
         console.log(results);
       });
+
+      db.execute(
+        'select `id`,`name`,`points` from `standings` order by `points` desc',
+        [id_now, name_now, points], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        console.log(results);
+      });
     })
     //res.render("doctors", {});
 
@@ -436,6 +447,8 @@ router.get('/logout', (req, res) => {
 
 res.render('base')
 id_now = "-1";
+name_now = "-1";
+points = 0;
 })
 
 router.get('/from_profile', (req, res) => {
