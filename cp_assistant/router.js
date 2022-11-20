@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
+const mysql2 = require('mysql2');
 
 let {PythonShell} = require('python-shell')
 
@@ -35,7 +36,7 @@ router.use(bodyParser.json())
 // console.log('Connected as ID '+connection.threadId);
 // })
 
-const db = mysql.createConnection({
+const db = mysql2.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -342,26 +343,40 @@ router.post('/signup_with_Data', (req, res) => {
 });
 
 
-router.get('/standings', (req, res) => {
-    console.log(points);
-    const sql_standings = `INSERT INTO standings (id, name, points) VALUES ('${id_now}', '${name_now}', '+points+')`;
-    let query_standings = db.query(sql_standings, (err, rows) => {
-        if (err) throw err;
+// router.get('/standings', (req, res) => {
+//     console.log(points);
+//     const sql_standings = `INSERT INTO standings (id, name, points) VALUES ('${id_now}', '${name_now}', '+points+')`;
+//     let query_standings = db.query(sql_standings, (err, rows) => {
+//         if (err) throw err;
 
-        //res.send(results);
-        // res.render("doctors", {
-        //     title: "Doctor",
-        //     data: results,
-        // })
-        console.log('ssspointssss',points);
+//         //res.send(results);
+//         // res.render("doctors", {
+//         //     title: "Doctor",
+//         //     data: results,
+//         // })
+//         console.log('ssspointssss',points);
 
-        console.log('The data from standings table: \n', rows);
+//         console.log('The data from standings table: \n', rows);
         
 
-    });
-    //res.render("doctors", {});
-})
+//     });
+//     //res.render("doctors", {});
+// })
 
+
+router.get('/standings', (req, res) => {
+    console.log(points);
+    db.execute(
+        'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
+        [id_now, name_now, points], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        console.log(results);
+      });
+    })
+    //res.render("doctors", {});
 
 router.get('/all', (req, res) => {
     let sql = `select * from user_table`;
