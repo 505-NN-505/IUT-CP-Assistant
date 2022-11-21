@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/cfstanding.css">
+    <title> <% title %></title>
+</head>
+<body>
+    <section class="header">
+        <nav>
+            <a href="/route/logout"><img src="/images/logo.png"> </a>
+            <div class="nav-links" id="navLinks">
+                <ul>
+                    
+                    <li><a href="/route/logout">HOME</a></li>
+                    <li><a href="">STANDING</a></li>
+                    <li><a href="/route/all">VIEW ALL</a></li>
+                    <li><a href="/route/logout">LOGOUT</a></li>
+                    <li><a href="">ABOUT</a></li>
+                </ul>
+            </div>
+        </nav>
+    </section>
+    <h1>At-Coder STANDING</h1>
+    <div class="container">
+        <table>
+            <thead class="head">
+                <tr>
+                    <th>Rating</th>
+                    <th>ID</th>
+                    <th>Handle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td>Cell 1</td>
+                    <td>Cell 2</td>
+                    <td>Cell 3</td>
+                    <td>Cell 4</td>
+                    <td>Cell 5</td>
+                </tr> -->
+                <tr>
+                    <%
+                    if(sampleData.length>0){
+                        sampleData.forEach(function (data){
+                    %>
+                    <tr>
+                        <td> <%= data.rating %></td>
+                        <td> <%= data.id %></td>
+                        <td><%= data.handle %></td>
+                    </tr>
+                    <%            
+                        });
+                    }
+                    else{
+                    %>
+                        <tr>
+                            <td colspan="3">No User Found</td>
+                        </tr>
+                    <%
+                    }
+                    %>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>

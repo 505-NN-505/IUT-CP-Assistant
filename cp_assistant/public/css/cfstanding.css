@@ -1,0 +1,139 @@
+@import url(
+    "https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;600;700&display=swap");
+
+*{
+    padding: 10;
+    margin: 15;
+    /* box-sizing: border-box; */
+}
+
+body, input{
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+
+
+.header {
+    position: relative;
+     background-color:  #173F5F;
+}
+
+nav{
+    display: flex;
+    padding: 0% 6%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav img{
+    width: 75px;
+}
+
+.nav-links{
+    flex: 1;
+    text-align: right;
+}
+
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+}
+
+.nav-links ul a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-links ul li::after{
+    content: '';
+    width: 0%;
+    height: 2px; 
+    background: tomato;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+.nav-links ul li:hover::after{
+    width: 100%;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	/* background: linear-gradient(45deg, #49a09d, #5f2c82); */
+	background: linear-gradient(45deg, #6290c8, #4A5899); 
+	/* background: linear-gradient(45deg, green, #5f2c82); */
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+h1{
+    color: #fff;
+    text-align: center;
+    text-decoration:underline;
+    
+    
+}
+.container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+table {
+	width: 800px;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th,
+td {
+	padding: 15px;
+	background-color: rgba(0,0,0,0.2);
+	color: #fff;
+
+}
+
+th {
+	text-align: left;
+}
+
+thead {
+	th {
+		background-color: #55608f;
+		 
+	}
+}
+
+tbody {
+	tr {
+		&:hover {
+			background-color: rgba(255,255,255,0.3);
+		}
+	}
+	td {
+		position: relative;
+		&:hover {
+			&:before {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: -9999px;
+				bottom: -9999px;
+				background-color: rgba(255,255,255,0.2);
+				z-index: -1;
+			}
+		}
+	}
+}

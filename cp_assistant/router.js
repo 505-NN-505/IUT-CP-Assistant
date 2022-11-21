@@ -3,7 +3,8 @@ var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
 
-let {PythonShell} = require('python-shell')
+let {PythonShell} = require('python-shell');
+const { addListener } = require("nodemon");
 
 let id_now = "-1";
 let msg =null ;
@@ -209,6 +210,45 @@ router.get('/signup', (req, res) => {
 router.get('/logout', (req, res) => {
    
     res.render('base')
+})
+
+// for now standing will show cf standing
+router.get('/cfstanding', (req, res) => {
+    
+
+    const sql = `select rating,id, handle from table_codeforces order by rating desc`;
+    let query = db.query(sql, (err, rows) => {
+        if(err){
+            throw err;
+        }
+        else{
+            res.render('cfstanding',{
+                title: 'CFStanding',
+                sampleData:rows,
+        });
+
+        }
+    
+       });
+})
+
+router.get('/atcoderstanding', (req, res) => {
+    
+
+    const sql = `select rank,id, handle from table_atcoder order by rating desc`;
+    let query = db.query(sql, (err, rows) => {
+        if(err){
+            throw err;
+        }
+        else{
+            res.render('atcoderstanding',{
+                title: 'AtCODERStanding',
+                sampleData:rows,
+        });
+
+        }
+    
+       });
 })
 
 router.get('/from_profile', (req, res) => {

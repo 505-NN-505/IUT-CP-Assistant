@@ -19,7 +19,7 @@
                 <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
                 <ul>
                     <li><a href="">HOME</a></li>
-                    <li><a href="">STANDING</a></li>
+                    <li><a href="/route/cfstanding">STANDING</a></li>
                     <li><a href="/route/profile">PROFILE</a></li>
                     <li><a href="/route/homelogin">LOGIN</a></li>
                     <!-- <a href="/login" class="nav-item nav-link">Doctor</a> -->
@@ -46,14 +46,18 @@
         <p>This section shows the standings of top students in all the platforms.</p>
 
         <div class="row">
+            <a href="/route/cfstanding">
             <div class="standings-col">
                 <h3>Codeforces</h3>
-                <p>This division is for the students standings in Codeforces.</p>
+                <p>This division is for the students standings <br>in Codeforces.</p>
             </div>
-            <div class="standings-col">
-                <h3>Codechef</h3>
-                <p>This division is for the students standings in Codechef.</p>
+            </a>
+            <a href="/route/atcoderstanding">
+            <div class="standings-col" style="cursor: pointer;" onclick="window.location='/route/atcoderstanding';">
+                <h3>AtCoder</h3>
+                <p>This division is for the students standings <br>in AtCoder.</p>
             </div>
+            </a>
             <div class="standings-col">
                 <h3>Overall</h3>
                 <p>This division is for the students standings in in all platforms.</p>
