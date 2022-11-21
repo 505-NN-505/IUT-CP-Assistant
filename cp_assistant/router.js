@@ -2,11 +2,15 @@ var express = require("express");
 var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
+const mysql2 = require('mysql2');
 
 let {PythonShell} = require('python-shell');
 const { addListener } = require("nodemon");
 
 let id_now = "-1";
+let name_now = "-1";
+let points=0;
+
 let msg =null ;
 
 var router = express()
@@ -33,7 +37,7 @@ router.use(bodyParser.json())
 // console.log('Connected as ID '+connection.threadId);
 // })
 
-const db = mysql.createConnection({
+const db = mysql2.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
@@ -285,14 +289,16 @@ router.post('/signup_with_Data', (req, res) => {
          });
     }
 
-    if(req.body.password!=req.body.cpassword){
+    else if(req.body.password!=req.body.cpassword){
         res.render('signup' , {
             msg: 'Password do not match',
          });
         //  res.end("Passwords do not match");
     }
 
-    id_now = req.body.student_ID;
+    else{
+    id_now = req.body.studentID;
+    name_now = req.body.name;
 
     const sql = `INSERT INTO user_table (id, password, handle_codeforces, handle_atcoder, handle_vjudge) VALUES ('${req.body.studentID}', '${req.body.cpassword}', '${req.body.cf_handle}', '${req.body.atcoder_username}','${req.body.name}')`;
     let query = db.query(sql, (err, rows) => {
@@ -314,7 +320,19 @@ router.post('/signup_with_Data', (req, res) => {
         
         args:[req.body.cf_handle]
     }
+
+    let at_options = {
+        
+        args:[req.body.atcoder_username]
+    }
     console.log("innnnn");
+
+    let cf_rating=0;
+    let cf_solve_count=0;
+
+    let at_rating=0;
+    let at_solve_count=0;
+    
 
     PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
         if (err) {
@@ -326,19 +344,116 @@ router.post('/signup_with_Data', (req, res) => {
             //const data = results[0];
            //console.log(data.titlePhoto);
            // res.send(data);
-            console.log(results);
-            console.log("rank: ",data.rank);
-            console.log("rating: ",data.rating+1000);
+           // console.log(results);
+           /// //console.log("rank: ",data.rank);
+           console.log("rating: ",data.rating);
+             cf_rating = data.rating;
         }
     })
 
+    
+    PythonShell.run("scrapers/main.py", options, function(err, results) {
+        if (err) {
+            console.log("ERRROR!");
+            console.log(err);
+        } else {
+            console.log("LENGTH IS: ", results.length)
+            const data= JSON.parse(results[0]);
+            //const data = results[0];
+           //console.log(data.titlePhoto);
+           // res.send(data);
+           // console.log(results);
+            // console.log("rank: ",data.rank);
+             console.log("sc: ",data.solved_count);
+            cf_solve_count=data.solved_count;
+            //console.log(rating);
+             points += cf_rating+cf_solve_count;
+             console.log('pointssss',points);
+        }
+    })
 
+  
+
+    PythonShell.run("scrapers/atcoder_stat.py", at_options, function(err, results) {
+        if (err) {
+            console.log("ERRROR!");
+            console.log(err);
+        } else {
+            console.log("LENGTH IS atcoder: ", results.length)
+           // const data= JSON.parse(results[1]);
+            //const data = results[0];
+            console.log(results[0]);
+            console.log(results[1]);
+            console.log(results[2]);
+            //res.send(data);
+            at_solve_count = parseInt(results[1]);
+            at_rating = parseInt(results[2]);
+            //console.log('solved_at',at_solve_count+1000);
+            //console.log('rating_at',at_rating+1000);
+            points += at_solve_count + at_rating;
+            console.log('from atcoder: ',points)
+        }
+    })
+
+    
+    
+    //console.log(solve_count);
     ////////
    // res.render('base_logout')
     res.render('base_logout' , {
         userID: id_now,
      });
+
+
+    ///else end
+    }
 });
+
+
+// router.get('/standings', (req, res) => {
+//     console.log(points);
+//     const sql_standings = `INSERT INTO standings (id, name, points) VALUES ('${id_now}', '${name_now}', '+points+')`;
+//     let query_standings = db.query(sql_standings, (err, rows) => {
+//         if (err) throw err;
+
+//         //res.send(results);
+//         // res.render("doctors", {
+//         //     title: "Doctor",
+//         //     data: results,
+//         // })
+//         console.log('ssspointssss',points);
+
+//         console.log('The data from standings table: \n', rows);
+        
+
+//     });
+//     //res.render("doctors", {});
+// })
+
+
+router.get('/standings', (req, res) => {
+    console.log(points);
+    db.execute(
+        'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
+        [id_now, name_now, points], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        console.log(results);
+      });
+
+      db.execute(
+        'select `id`,`name`,`points` from `standings` order by `points` desc',
+        [id_now, name_now, points], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        console.log(results);
+      });
+    })
+    //res.render("doctors", {});
 
 router.get('/all', (req, res) => {
     let sql = `select * from user_table`;
@@ -372,6 +487,8 @@ router.get('/logout', (req, res) => {
 
 res.render('base')
 id_now = "-1";
+name_now = "-1";
+points = 0;
 })
 
 router.get('/from_profile', (req, res) => {
