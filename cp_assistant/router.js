@@ -646,7 +646,8 @@ router.get('/standings', (req, res) => {
 
       db.execute(
         // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
-        'select `id`,`name`,`points` from `standings` order by `points` desc',
+        // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+        'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings`',
         [id_now, name_now, points], 
         (err, results) => {
         if (err) {
