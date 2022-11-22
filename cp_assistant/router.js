@@ -220,7 +220,7 @@ router.get('/logout', (req, res) => {
 router.get('/cfstanding', (req, res) => {
     
 
-    const sql = `select rating,id, handle from table_codeforces order by rating desc`;
+    const sql = `select rating,id, handle, ROW_NUMBER() OVER (order by rating desc) as rank from table_codeforces `;
     let query = db.query(sql, (err, rows) => {
         if(err){
             throw err;
@@ -238,8 +238,9 @@ router.get('/cfstanding', (req, res) => {
 
 router.get('/atcoderstanding', (req, res) => {
     
+    const sql = `select rank,id, handle, ROW_NUMBER() OVER (order by rank desc) as number from table_atcoder `;
 
-    const sql = `select rank,id, handle from table_atcoder order by rating desc`;
+    // const sql = `select rank,id, handle from table_atcoder order by rating desc`;
     let query = db.query(sql, (err, rows) => {
         if(err){
             throw err;
@@ -251,6 +252,7 @@ router.get('/atcoderstanding', (req, res) => {
         });
 
         }
+        console.log(rows);
     
        });
 })
@@ -433,23 +435,32 @@ router.post('/signup_with_Data', (req, res) => {
 
 router.get('/standings', (req, res) => {
     console.log(points);
-    db.execute(
-        'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
-        [id_now, name_now, points], 
-        (err, results) => {
-        if (err) {
-            throw err;
-        }
-        console.log(results);
-      });
+    // db.execute(
+    //     'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
+    //     [id_now, name_now, points], 
+    //     (err, results) => {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     console.log(results);
+    //   });
 
       db.execute(
+        // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
         'select `id`,`name`,`points` from `standings` order by `points` desc',
         [id_now, name_now, points], 
         (err, results) => {
         if (err) {
             throw err;
         }
+        else{
+            res.render('standings',{
+                title: 'Standings',
+                sampleData:results,
+             });
+        }
+        
+        
         console.log(results);
       });
     })

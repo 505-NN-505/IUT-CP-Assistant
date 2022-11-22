@@ -28,6 +28,7 @@
         <table>
             <thead class="head">
                 <tr>
+                    <th>Rank</th>
                     <th>Rating</th>
                     <th>ID</th>
                     <th>Handle</th>
@@ -47,6 +48,7 @@
                         sampleData.forEach(function (data){
                     %>
                     <tr>
+                        <td> <%= data.rank %></td>
                         <td> <%= data.rating %></td>
                         <td> <%= data.id %></td>
                         <td><%= data.handle %></td>
@@ -57,7 +59,7 @@
                     else{
                     %>
                         <tr>
-                            <td colspan="3">No User Found</td>
+                            <td colspan="4">No User Found</td>
                         </tr>
                     <%
                     }

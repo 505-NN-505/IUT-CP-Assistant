@@ -15,7 +15,7 @@
                 <ul>
                     
                     <li><a href="/route/logout">HOME</a></li>
-                    <li><a href="">STANDING</a></li>
+                    <!-- <li><a href="">STANDING</a></li> -->
                     <li><a href="/route/all">VIEW ALL</a></li>
                     <li><a href="/route/logout">LOGOUT</a></li>
                     <li><a href="">ABOUT</a></li>
@@ -23,7 +23,7 @@
             </div>
         </nav>
     </section>
-    <h1>At-Coder STANDING</h1>
+    <h1>CODEFORCES STANDING</h1>
     <div class="container">
         <table>
             <thead class="head">
@@ -35,16 +35,22 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- <tr>
+                    <td>Cell 1</td>
+                    <td>Cell 2</td>
+                    <td>Cell 3</td>
+                    <td>Cell 4</td>
+                    <td>Cell 5</td>
+                </tr> -->
                 <tr>
                     <%
                     if(sampleData.length>0){
                         sampleData.forEach(function (data){
                     %>
                     <tr>
-                        <td> <%= data.number %></td>
-                        <td> <%= data.rank %></td>
-                        <td> <%= data.id %></td>
-                        <td><%= data.handle %></td>
+                        <td> <%= data.id_now %></td>
+                        <td> <%= data.name %></td>
+                        <td><%= data.points %></td>
                     </tr>
                     <%            
                         });
@@ -52,7 +58,7 @@
                     else{
                     %>
                         <tr>
-                            <td colspan="4">No User Found</td>
+                            <td colspan="3">No User Found</td>
                         </tr>
                     <%
                     }
