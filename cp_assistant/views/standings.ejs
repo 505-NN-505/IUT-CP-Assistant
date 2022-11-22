@@ -47,11 +47,12 @@
                     if(sampleData.length>0){
                         sampleData.forEach(function (data){
                     %> 
-                    <td> <%= data.rank %></td>
-                    <td><a href="/route/to_profile/<%= data.id %>"> <%= data.id %></a></td>
-                    <td> <%= data.name %></td>
-                    <td><%= data.points %></td>
-                </tr>
+                    
+                        <td> <%= data.rank %></td>
+                        <td><a href="/route/to_profile/<%= data.id %>"> <%= data.id %></a></td>
+                        <td> <%= data.name %></td>
+                        <td><%= data.points %></td>
+                    </tr>
                     <%            
                         });
                     }
