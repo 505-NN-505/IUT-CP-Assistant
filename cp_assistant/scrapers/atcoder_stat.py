@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re
 import sys
 
-#username = sys.argv[1]
+username = sys.argv[1]
 
 class AtCoderScrapper:
 
@@ -14,29 +14,11 @@ class AtCoderScrapper:
         req = requests.get(url).json()
         #print(req)
         ac_count = 0
-        wa_count = 0
-        tle_count = 0
-        mle_count = 0
-        rte_count = 0
-        cpe_count = 0 
-        others_count = 0
         for item in req:
             verdict = item['result']
            # print(item['result'])
             if verdict == 'AC':
                 ac_count = ac_count + 1
-            elif verdict == 'WA':
-                wa_count = wa_count + 1
-            elif verdict == 'CE':
-                cpe_count = cpe_count + 1
-            elif verdict == 'RE':
-                rte_count = rte_count + 1
-            elif verdict == 'TLE':
-                tle_count = tle_count + 1
-            elif verdict == 'MLE':
-                mle_count = mle_count + 1
-            else:
-                others_count = others_count + 1
         return {
             #'platform': 'atcoder',
             #'user_name': username,
@@ -81,14 +63,14 @@ if __name__ == '__main__':
     print('START RUNNING ATCODER SCRAPPER SCRIPT\n')
     atcoder_scrapper = AtCoderScrapper()
     # resp = spoj_scrapper.get_user_info('tarango_khan')
-    resp = atcoder_scrapper.get_user_submission_count(sys.argv[1])
+    resp = atcoder_scrapper.get_user_submission_count(username)
 
     for item1 in resp:
         sc = (item1)
     print(sc)
     #print(resp)
 
-    lol1,lol2 = atcoder_scrapper.get_user_ratings(sys.argv[1])
+    lol1,lol2 = atcoder_scrapper.get_user_ratings(username)
     #lol1,lol2 = atcoder_scrapper.get_user_submission_count('shahriar118')
 
     #print(lol1)
