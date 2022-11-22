@@ -193,29 +193,33 @@ if __name__ == '__main__':
     #resp = codeforces_scrapper.get_user_info_heavy('RiffleShuffle')
     #resp = codeforces_scrapper.get_submission_stat('RiffleShuffle')
     # resp = codeforces_scrapper.get_user_rating_history('Starscream-11813')
-    resp = codeforces_scrapper.get_user_rating_history(sys.argv[1])
+    #resp = codeforces_scrapper.get_user_rating_history("Shahriar118")
     # resp2 = codeforces_scrapper.get_user_info_heavy('RiffleShuffle')
-    userratings=[]
-    for item in resp:
-        userratings.append(item['newRating'])
+    #userratings=[]
+    #for item in resp:
+       # userratings.append(item['newRating'])
         #print(item['newRating'])
     #print(resp)
     #print(userratings)
 
     solved_count = []
 
-    resp2 = codeforces_scrapper.get_submission_stat(sys.argv[1])
+   # resp2 = codeforces_scrapper.get_submission_stat(sys.argv[1])
+    #resp2 = codeforces_scrapper.get_submission_stat("Shahriar118")
     #resp2 = json.dumps(resp2)
 
     resp3 = codeforces_scrapper.get_submission_stat_count(sys.argv[1])
-    solved_count=0
-    for item in resp2['solved_problems']:
-        solved_count = solved_count + 1
+    #solved_count=0
+    #for item in resp2['solved_problems']:
+     
+     #   solved_count = solved_count + 1
     #print(solved_count)
     #print(resp2)
     resp3 = json.dumps(resp3)
-    print(resp3)
-    print(resp2)
+    test =json.loads(resp3)
+    print(test["solved_count"])
+    # print(resp3)
+    # print(resp2)
 
    
 

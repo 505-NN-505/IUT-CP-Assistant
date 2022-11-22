@@ -7,11 +7,21 @@ const mysql2 = require('mysql2');
 let {PythonShell} = require('python-shell');
 const { addListener } = require("nodemon");
 
+///global
+
+///global
+
 let id_now = "-1";
 let name_now = "-1";
 let points=0;
+let from_sign_up = 0;
+
+var ids = []; 
+var updated_points = []; 
 
 let msg =null ;
+
+///
 
 var router = express()
 
@@ -75,6 +85,224 @@ const  credential = {
 
 
 router.post('/login', (req, res)=>{
+
+    if(from_sign_up==1){
+        db.execute(
+            'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
+            [id_now, name_now, points], 
+            (err, results) => {
+            if (err) {
+                throw err;
+            }
+            console.log(results);
+          });
+    }
+
+    ///update scrappers
+
+    db.execute(
+        'select `id`,`handle_codeforces`,`handle_atcoder` from `user_table`',
+        [id_now, name_now, points], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        console.log(results);
+        console.log(results.length);
+
+        for (let i = 0; i < results.length; i++) {
+            ids.push(results[i].id);
+
+            ///scrappers for updating
+            let a=0,b=0,c=0,d=0;
+
+            console.log("iddddd",results[i].id)
+            console.log("cffffff",results[i].handle_codeforces)
+            console.log("atttttt",results[i].handle_atcoder)
+
+            let options = {
+        
+                args:[results[i].handle_codeforces]
+            }
+        
+            let at_options = {
+                
+                args:[results[i].handle_atcoder]
+            }
+           // console.log("innnnn");
+        
+            let cf_rating=0;
+            let cf_solve_count=0;
+        
+            let at_rating=0;
+            let at_solve_count=0;
+
+            let new_points = 0;
+            
+        
+            PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
+                function resolveAfter2Seconds() {
+                    return new Promise(resolve => {
+                      setTimeout(() => {
+                        resolve('resolved');
+                      }, 5000);
+                    });
+                  }
+                  
+                  async function asyncCall() {
+                    console.log('calling');
+                    const result = await resolveAfter2Seconds();
+                    console.log(result);
+                    // expected output: "resolved"
+                  }
+                  
+                  asyncCall();
+                a=1;
+                if (err) {
+                    console.log("ERRROR!");
+                    console.log(err);
+                } else {
+                    console.log("LENGTH IS: ", results.length)
+                    const data= JSON.parse(results[0]);
+                    //const data = results[0];
+                   //console.log(data.titlePhoto);
+                   // res.send(data);
+                   // console.log(results);
+                   /// //console.log("rank: ",data.rank);
+                   console.log("rating: ",parseInt(data));
+                     cf_rating = parseInt(data);
+
+                     
+                }
+
+                PythonShell.run("scrapers/main.py", options, function(err, results) {
+                    
+                    function resolveAfter2Seconds() {
+                        return new Promise(resolve => {
+                          setTimeout(() => {
+                            resolve('resolved');
+                          }, 5000);
+                        });
+                      }
+                      
+                      async function asyncCall() {
+                        console.log('calling');
+                        const result = await resolveAfter2Seconds();
+                        console.log(result);
+                        // expected output: "resolved"
+                      }
+                      
+                      asyncCall();
+
+                    
+                      b=1;
+                    if (err) {
+                        console.log("ERRROR!");
+                        console.log(err);
+                    } else {
+                        console.log("LENGTH IS: ", results.length)
+                        const data= JSON.parse(results[0]);
+                        //const data = results[0];
+                       //console.log(data.titlePhoto);
+                       // res.send(data);
+                       // console.log(results);
+                        // console.log("rank: ",data.rank);
+                         console.log("sc: ",parseInt(data));
+                        cf_solve_count=parseInt(data);
+                        //console.log(rating);
+                         new_points += cf_rating+cf_solve_count;
+                         console.log('pointssss from cf',new_points,i);
+    
+                      
+                          
+                        
+                    }
+
+                    PythonShell.run("scrapers/atcoder_stat.py", at_options, function(err, results) {
+                        
+                        function resolveAfter2Seconds() {
+                            return new Promise(resolve => {
+                              setTimeout(() => {
+                                resolve('resolved');
+                              }, 5000);
+                            });
+                          }
+                          
+                          async function asyncCall() {
+                            console.log('calling');
+                            const result = await resolveAfter2Seconds();
+                            console.log(result);
+                            // expected output: "resolved"
+                          }
+                          
+                          asyncCall();
+
+        
+                        c=1;
+                        if (err) {
+                            console.log("ERRROR!");
+                            console.log(err);
+                        } else {
+                            console.log("LENGTH IS atcoder: ", results.length)
+                           // const data= JSON.parse(results[1]);
+                            //const data = results[0];
+                            console.log(results[0]);
+                            console.log(results[1]);
+                            console.log(results[2]);
+                            //res.send(data);
+                            at_solve_count = parseInt(results[1]);
+                            at_rating = parseInt(results[2]);
+                            //console.log('solved_at',at_solve_count+1000);
+                            //console.log('rating_at',at_rating+1000);
+                            new_points += at_solve_count + at_rating;
+                            console.log('from atcoder: ',new_points,i)
+        
+                            updated_points.push(new_points);
+                            console.log(updated_points);
+                            
+                            //
+
+                        }
+                    })
+                })
+            })
+        
+           
+
+            // let count = 0;
+  
+            // const intervalId = setInterval(() => {
+            //     if(a==1 && b==1 && c==1 && d==0){
+            //         updated_points.push(new_points);
+            //         d=1;
+            //     }
+            //     count++;
+                  
+            //     if (count === 10) {
+            //         console.log('Clearing the interval id after 5 executions');
+            //         clearInterval(intervalId);
+            //       }
+            //     }, 1000);
+
+            
+            //   if(a==1 && b==1 && c==1 && d==0){
+            //             updated_points.push(new_points);
+            //             d=1;
+            //         }
+            // updated_points.push(new_points);
+            // console.log(updated_points);
+
+
+          }
+
+
+      });
+
+
+    /////
+
+    
+
     const sql = `select password from user_table where id='${req.body.student_ID}'`;
     let query = db.query(sql, (err, rows) => {
 
@@ -282,6 +510,7 @@ router.get('/aftersignup', (req, res) => {
 
 router.post('/signup_with_Data', (req, res) => {
 
+    console.log(updated_points);
     console.log('Input:: name='+JSON.stringify(req.body.studentID)+' age='+ JSON.stringify(req.body.cpassword) +' city='+ req.body.cf_handle + ' dep=' + req.body.atcoder_username);
     console.log(req.body);
     if(req.body.password.length<8){
@@ -306,13 +535,8 @@ router.post('/signup_with_Data', (req, res) => {
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
-        //res.send(results);
-        // res.render("doctors", {
-        //     title: "Doctor",
-        //     data: results,
-        // })
-
         console.log('The data from user table: \n', rows);
+        from_sign_up = 1;
 
     });
   
@@ -348,8 +572,8 @@ router.post('/signup_with_Data', (req, res) => {
            // res.send(data);
            // console.log(results);
            /// //console.log("rank: ",data.rank);
-           console.log("rating: ",data.rating);
-             cf_rating = data.rating;
+           console.log("rating: ",data);
+             cf_rating = data;
         }
     })
 
@@ -366,8 +590,8 @@ router.post('/signup_with_Data', (req, res) => {
            // res.send(data);
            // console.log(results);
             // console.log("rank: ",data.rank);
-             console.log("sc: ",data.solved_count);
-            cf_solve_count=data.solved_count;
+             console.log("sc: ",data);
+            cf_solve_count=data;
             //console.log(rating);
              points += cf_rating+cf_solve_count;
              console.log('pointssss',points);
@@ -402,48 +626,23 @@ router.post('/signup_with_Data', (req, res) => {
     //console.log(solve_count);
     ////////
    // res.render('base_logout')
-    res.render('base_logout' , {
-        userID: id_now,
+    // res.render('base_logout' , {
+    //     userID: id_now,
+    //  });
+
+    res.render('login' , {
+        msg: null
      });
-
-
     ///else end
     }
 });
 
 
-// router.get('/standings', (req, res) => {
-//     console.log(points);
-//     const sql_standings = `INSERT INTO standings (id, name, points) VALUES ('${id_now}', '${name_now}', '+points+')`;
-//     let query_standings = db.query(sql_standings, (err, rows) => {
-//         if (err) throw err;
-
-//         //res.send(results);
-//         // res.render("doctors", {
-//         //     title: "Doctor",
-//         //     data: results,
-//         // })
-//         console.log('ssspointssss',points);
-
-//         console.log('The data from standings table: \n', rows);
-        
-
-//     });
-//     //res.render("doctors", {});
-// })
 
 
 router.get('/standings', (req, res) => {
-    console.log(points);
-    // db.execute(
-    //     'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
-    //     [id_now, name_now, points], 
-    //     (err, results) => {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     console.log(results);
-    //   });
+  //  console.log(points);
+    console.log(updated_points);
 
       db.execute(
         // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
