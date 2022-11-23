@@ -623,23 +623,44 @@ router.get('/to_profile/:id', (req, res)=>{
         atcoderHandleLink  += rows[0].handle;
 
         console.log(atcoderHandleLink);
-
-
-         res.render('profile' , {
-            userID: text,
-            cfHandle,
-            cfRating,
-            cfRank,
-            cfSolveCount,
-            cfHandleLink,
-            atCoderHandle,
-            atCoderRating,
-            atCoderRank,
-            atCoderSolveCount,
-            atcoderHandleLink,
-         });
         
     });
+
+    db.execute(
+        // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
+        // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+        'select `url`,`problem_name` from `problems_table` where `id`=(?)',
+        [id_now], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        else{
+            // res.render('standings',{
+            //     title: 'Standings',
+            //     sampleData:results,
+            //  });
+
+            console.log(results)
+            res.render('profile' , {
+                userID: id_now,
+                cfHandle,
+                cfRating,
+                cfRank,
+                cfSolveCount,
+                cfHandleLink,
+                atCoderHandle,
+                atCoderRating,
+                atCoderRank,
+                atCoderSolveCount,
+                atcoderHandleLink,
+                sampleData:results,
+             });
+        }
+        
+        
+        // console.log(results);
+      });
     
 })
 
@@ -990,6 +1011,12 @@ router.get('/edit_password', (req, res) => {
     res.render('editpass' , {
     userID: id_now,
  });
+})
+
+router.post('/after_edit_password', (req, res) => {
+    res.render('base_logout' , {
+        userID: id_now,
+     });
 })
 
 router.post('/problem_added', (req, res) => {
