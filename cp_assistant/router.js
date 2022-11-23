@@ -804,6 +804,51 @@ router.get('/add_problem', (req, res) => {
 
 router.post('/problem_added', (req, res) => {
 
+    let temp_text = "";
+    let options = {
+        
+        args:[req.body.problem]
+    }
+    
+
+    PythonShell.run("scrapers/cf_problem_name.py", options, function(err, results) {
+        if (err) {
+            console.log("ERRROR!");
+            console.log(err);
+        } else {
+            console.log("LENGTH IS: ", results.length)
+            //const data= JSON.parse(results[0]);
+            //const data = results[0];
+           //console.log(data.titlePhoto);
+           // res.send(data);
+           // console.log(results);
+           /// //console.log("rank: ",data.rank);
+           
+           temp_text = results;
+           console.log(results);
+           console.log("asdfg");
+
+        //    db.execute(
+        //     'INSERT INTO `problems_table` (`url`, `id`, `problem_name`) VALUES (?, ?, ?)',
+        //     [req.body.problem, id_now, temp_text], 
+        //     (err, t_results) => {
+        //     if (err) {
+        //         throw err;
+        //     }
+        //     console.log(t_results);
+        //     });
+
+       
+        const sql3 = `INSERT INTO problems_table (url,id,problem_name) VALUES ('${req.body.problem}', '${id_now}', '${temp_text}')`;
+        let query = db.query(sql3, (err, rows) => {
+            if (err) throw err;
+    
+            console.log('The data from user table: \n', rows);
+    
+        });
+        }
+    })
+
     console.log(req.body.problem)
     let cfHandle;
     let cfRating;

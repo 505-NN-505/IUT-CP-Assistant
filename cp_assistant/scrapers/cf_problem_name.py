@@ -5,14 +5,20 @@ from bs4 import BeautifulSoup
 import re
 import sys
 
+
+url = sys.argv[1]
+
 def atcoder_scraper(problem_url):
     #problem_url = input()
     page = requests.get(problem_url)
     soup = BeautifulSoup(page.content, features='lxml')
     titleList = soup.find_all('title')
     # print(page.history)
-    
-    print(titleList[0].get_text())
+    titleList = (titleList[0].get_text()).split()
+    titleList.pop(0)
+    titleList.pop(0)
+    title = ' '.join(titleList)
+    print(title)
 
 def codeforces_scraper(problem_url):
     # url = input()
@@ -38,13 +44,13 @@ def codeforces_scraper(problem_url):
 
     url = "https://codeforces.com/api/contest.standings?contestId=" + contest_id + "&from=1&count=1&showUnofficial=true"
     response = requests.get(url)
-    print(response)
+    #print(response)
     content = response.json()
     content = content['result']['problems']
     print(content[problem_int]['name'])
 
 
-url = "https://codeforces.com/problemset/problem/4/A"
+#url = "https://atcoder.jp/contests/practice2/tasks/practice2_a"
 parts = url.split('/')
 
 is_codeforces = False
