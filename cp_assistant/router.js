@@ -920,6 +920,13 @@ router.get('/add_problem', (req, res) => {
     res.render('add_problem')
 })
 
+
+router.get('/edit_password', (req, res) => {
+    res.render('editpass' , {
+    userID: id_now,
+ });
+})
+
 router.post('/problem_added', (req, res) => {
 
     let temp_text = "";

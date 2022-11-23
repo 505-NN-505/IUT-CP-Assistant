@@ -20,7 +20,7 @@
                     
                     <li><a href="/route/from_profile">HOME</a></li>
                     <li><a href="/route/standings">STANDING</a></li>
-                    <li><a href="/route/all">VIEW ALL</a></li>
+                    <!-- <li><a href="/route/all">VIEW ALL</a></li> -->
                     <li><a href="/route/logout">LOGOUT</a></li>
                     <!-- <li><a href="login.html">LOGIN</a></li> -->
                     <li><a href="">ABOUT</a></li>
@@ -51,6 +51,7 @@
               <ul class="nav nav-pills nav-stacked">
                   <li class="active"><a href="#"> <i class="fa fa-user"></i> Profile</a></li>
                   <li><a href="/route/add_problem"> <i class="fa fa-edit"></i> Add Problem</a></li>
+                  <li><a href="/route/edit_password"> <i class="fa fa-edit"></i> Edit Password</a></li>
               </ul>
           </div>
       </div>
@@ -91,7 +92,7 @@
                                 <a href=""><img src="/images/cf.png"> </a>
                                 <h4 class="red">Codeforces</h4>
                                 <p>Rating : <%=cfRating%> </p>
-                                <p>Rank : <%=cfRank%> </p>
+                                <!-- <p>Rank : <%=cfRank%> </p> -->
                                 <p>Solve Count : <%=cfSolveCount%> </p>
                                 
                               </div>
@@ -108,7 +109,7 @@
                                 <a href=""><img src="/images/atcoder.png"> </a>                              
                                    <h4 class="terques">AtCoder </h4>
                                   <p>Rating : <%=atCoderRating%> </p>
-                                  <p>Rank : <%=atCoderRank%> </p>
+                                  <!-- <p>Rank : <%=atCoderRank%> </p> -->
                                   <p>Solve Count : <%=atCoderSolveCount%> </p>
                                   
                               </div>
@@ -160,7 +161,7 @@
                     else{
                     %>
                         <tr>
-                            <td colspan="2">No User Found</td>
+                            <td colspan="5">No Problem Added!</td>
                         </tr>
                     <%
                     }

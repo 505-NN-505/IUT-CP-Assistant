@@ -16,9 +16,9 @@
                     
                     <li><a href="/route/logout">HOME</a></li>
                     <li><a href="/route/standings">STANDING</a></li>
-                    <li><a href="/route/all">VIEW ALL</a></li>
+                    <!-- <li><a href="/route/all">VIEW ALL</a></li> -->
                     <li><a href="/route/logout">LOGOUT</a></li>
-                    <li><a href="">ABOUT</a></li>
+                    <!-- <li><a href="">ABOUT</a></li> -->
                 </ul>
             </div>
         </nav>
@@ -29,9 +29,11 @@
             <thead class="head">
                 <tr>
                     <th>Rank</th>
-                    <th>Rating</th>
                     <th>ID</th>
                     <th>Handle</th>
+                    <th>Rating</th>
+                    <th>Solved Count</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -42,9 +44,10 @@
                     %>
                     <tr>
                         <td> <%= data.number %></td>
-                        <td> <%= data.rank %></td>
                         <td><a href="/route/to_profile/<%= data.id %>"> <%= data.id %></a></td>
                         <td><%= data.handle %></td>
+                        <td> <%= data.rank %></td>
+                        <td> <%= data.solvedcount %></td>
                     </tr>
                     <%            
                         });
@@ -52,7 +55,7 @@
                     else{
                     %>
                         <tr>
-                            <td colspan="4">No User Found</td>
+                            <td colspan="5">No User Found</td>
                         </tr>
                     <%
                     }
