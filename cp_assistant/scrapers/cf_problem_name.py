@@ -50,7 +50,7 @@ def codeforces_scraper(problem_url):
     print(content[problem_int]['name'])
 
 
-#url = "https://atcoder.jp/contests/practice2/tasks/practice2_a"
+#url = "https://codeforces.com/problemset/problem/4/A"
 parts = url.split('/')
 
 is_codeforces = False

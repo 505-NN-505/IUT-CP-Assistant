@@ -917,7 +917,7 @@ router.post('/problem_added', (req, res) => {
     db.execute(
         // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
         // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
-        'select `url` from `problems_table` where `id`=(?)',
+        'select `url`,`problem_name` from `problems_table` where `id`=(?)',
         [id_now], 
         (err, results) => {
         if (err) {
