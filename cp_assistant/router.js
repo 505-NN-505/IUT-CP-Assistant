@@ -16,10 +16,14 @@ let name_now = "-1";
 let points=0;
 let from_sign_up = 0;
 
-let cf_rating=0;
-let cf_solve_count=0;
-let at_rating=0;
-let at_solve_count=0;
+let g_cf_rating=0;
+let g_cf_solve_count=0;
+let g_cf_handle=0;
+
+let g_at_rating=0;
+let g_at_solve_count=0;
+let g_at_handle=0;
+
 
 var ids = []; 
 var updated_points = []; 
@@ -58,9 +62,32 @@ db.connect((err) => {
 router.post('/login', (req, res)=>{
 
     if(from_sign_up==1){
+
+        db.execute(
+            'INSERT INTO `table_codeforces` (`id`, `handle`, `rating`,`solve_count`) VALUES (?, ?, ?,?)',
+            [req.body.student_ID, g_at_handle, g_at_rating,g_at_solve_count], 
+            (err, results) => {
+            if (err) {
+                throw err;
+            }
+            //console.log(results);
+          });
+
         db.execute(
             'INSERT INTO `standings` (`id`, `name`, `points`) VALUES (?, ?, ?)',
-            [id_now, name_now, points], 
+            [req.body.student_ID, name_now, points], 
+            (err, results) => {
+            if (err) {
+                throw err;
+            }
+            //console.log(results);
+          });
+
+         
+  
+          db.execute(
+            'INSERT INTO `table_atcoder` (`id`, `handle`, `rating`,`solve_count`) VALUES (?, ?, ?,?)',
+            [req.body.student_ID, g_cf_handle, g_cf_rating,g_cf_solve_count], 
             (err, results) => {
             if (err) {
                 throw err;
@@ -69,22 +96,22 @@ router.post('/login', (req, res)=>{
           });
           
           
-          from_sign_up = 0;
-          let cf_rating=0;
-          let cf_solve_count=0;
-          let at_rating=0;
-          let at_solve_count=0;
+          //from_sign_up = 0;
+        //   let cf_rating=0;
+        //   let cf_solve_count=0;
+        //   let at_rating=0;
+        //   let at_solve_count=0;
     }
 
     ///update scrappers
 
-    db.execute(
-        'select `id`,`handle_codeforces`,`handle_atcoder` from `user_table`',
-        [id_now, name_now, points], 
-        (err, results) => {
-        if (err) {
-            throw err;
-        }
+    // db.execute(
+    //     'select `id`,`handle_codeforces`,`handle_atcoder` from `user_table`',
+    //     [id_now, name_now, points], 
+    //     (err, results) => {
+    //     if (err) {
+    //         throw err;
+    //     }
        // console.log(results);
         //console.log(results.length);
 
@@ -270,7 +297,7 @@ router.post('/login', (req, res)=>{
         //   }
 
 
-      });
+      //});
 
 
     /////
@@ -329,7 +356,7 @@ router.get('/profile', (req, res)=>{
         res.end("Need to login first");
 
     else{
-    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    const sql = `select handle,rating,solve_count from table_codeforces where id='${id_now}'`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -346,7 +373,7 @@ router.get('/profile', (req, res)=>{
         console.log(cfHandleLink);
     });
 
-    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    const sql1 = `select handle,rating,solve_count from table_atcoder where id='${id_now}'`;
     let query1 = db.query(sql1, (err, rows) => {
         if (err) throw err;
 
@@ -432,7 +459,7 @@ router.get('/del_profile/:name', (req, res)=>{
         res.end("Need to login first");
 
     else{
-    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    const sql = `select handle,rating,solve_count from table_codeforces where id='${id_now}'`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -474,7 +501,7 @@ router.get('/del_profile/:name', (req, res)=>{
      });
 
     // }
-    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    const sql1 = `select handle,rating,solve_count from table_atcoder where id='${id_now}'`;
     let query1 = db.query(sql1, (err, rows) => {
         if (err) throw err;
 
@@ -554,7 +581,7 @@ router.get('/to_profile/:id', (req, res)=>{
     let atCoderSolveCount;
     let atcoderHandleLink = "atcoder.jp/users/";
 
-    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${text}'`;
+    const sql = `select handle,rating,solve_count from table_codeforces where id='${text}'`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -576,7 +603,7 @@ router.get('/to_profile/:id', (req, res)=>{
         console.log(cfHandleLink);
     });
 
-    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${text}'`;
+    const sql1 = `select handle,rating,solve_count from table_atcoder where id='${text}'`;
     let query1 = db.query(sql1, (err, rows) => {
         if (err) throw err;
 
@@ -636,7 +663,20 @@ router.get('/signup', (req, res) => {
 
 
 router.get('/logout', (req, res) => {
-   
+    
+    id_now = "-1";
+ name_now = "-1";
+ points=0;
+ from_sign_up = 0;
+
+ g_cf_rating=0;
+ g_cf_solve_count=0;
+ g_cf_handle=0;
+
+ g_at_rating=0;
+ g_at_solve_count=0;
+ g_at_handle=0;
+
     res.render('base')
 })
 
@@ -662,7 +702,7 @@ router.get('/cfstanding', (req, res) => {
 
 router.get('/atcoderstanding', (req, res) => {
     
-    const sql = `select rank,id, handle, ROW_NUMBER() OVER (order by rank desc) as number from table_atcoder `;
+    const sql = `select id, handle, ROW_NUMBER() OVER (order by rating desc) as number from table_atcoder `;
 
     // const sql = `select rank,id, handle from table_atcoder order by rating desc`;
     let query = db.query(sql, (err, rows) => {
@@ -706,10 +746,34 @@ router.get('/aftersignup', (req, res) => {
 
 router.post('/signup_with_Data', (req, res) => {
 
-    console.log(updated_points);
-    console.log('Input:: name='+JSON.stringify(req.body.studentID)+' age='+ JSON.stringify(req.body.cpassword) +' city='+ req.body.cf_handle + ' dep=' + req.body.atcoder_username);
-    console.log(req.body);
-    if(req.body.password.length<8){
+    let cnt=0;
+    let sql_t = `select * from user_table where id='${req.body.studentID}'`;
+    let query_t = db.query(sql_t, (err, results) => {
+    if (err) throw err;
+    console.log('cnt',results);
+    //res.send(results);
+    // res.render("doctors", {
+    //     title: "Doctor",
+    //     data: results,
+    // })
+    cnt = results.length
+
+    console.log('cntt',cnt)
+    g_cf_handle = req.body.cf_handle
+    g_at_handle = req.body.atcoder_username
+
+    // console.log(updated_points);
+    // console.log('Input:: name='+JSON.stringify(req.body.studentID)+' age='+ JSON.stringify(req.body.cpassword) +' city='+ req.body.cf_handle + ' dep=' + req.body.atcoder_username);
+    // console.log(req.body);
+
+   if(cnt!=0){
+        res.render('signup' , {
+            msg: 'User already registered',
+         });
+        //  res.end("Passwords do not match");
+    }
+
+    else if(req.body.password.length<8){
         //res.end("Password must be 8 chars long");
         res.render('signup' , {
             msg: 'Password must be 8 characters long.',
@@ -723,6 +787,9 @@ router.post('/signup_with_Data', (req, res) => {
         //  res.end("Passwords do not match");
     }
 
+    
+  
+
     else{
     id_now = req.body.studentID;
     name_now = req.body.name;
@@ -731,7 +798,7 @@ router.post('/signup_with_Data', (req, res) => {
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
-        console.log('The data from user table: \n', rows);
+       // console.log('The data from user table: \n', rows);
         from_sign_up = 1;
 
     });
@@ -749,19 +816,14 @@ router.post('/signup_with_Data', (req, res) => {
     }
     console.log("innnnn");
 
-    let cf_rating=0;
-    let cf_solve_count=0;
-
-    let at_rating=0;
-    let at_solve_count=0;
-    
+   
 
     PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
         if (err) {
             console.log("ERRROR!");
             console.log(err);
         } else {
-            console.log("LENGTH IS: ", results.length)
+            //console.log("LENGTH IS: ", results.length)
             const data= JSON.parse(results[0]);
             //const data = results[0];
            //console.log(data.titlePhoto);
@@ -769,7 +831,7 @@ router.post('/signup_with_Data', (req, res) => {
            // console.log(results);
            /// //console.log("rank: ",data.rank);
            console.log("rating: ",data);
-             cf_rating = data;
+             g_cf_rating = data;
         }
     })
 
@@ -787,9 +849,9 @@ router.post('/signup_with_Data', (req, res) => {
            // console.log(results);
             // console.log("rank: ",data.rank);
              console.log("sc: ",data);
-            cf_solve_count=data;
+            g_cf_solve_count=data;
             //console.log(rating);
-             points += cf_rating+cf_solve_count;
+             points += g_cf_rating+g_cf_solve_count;
              console.log('pointssss',points);
         }
     })
@@ -804,16 +866,16 @@ router.post('/signup_with_Data', (req, res) => {
             console.log("LENGTH IS atcoder: ", results.length)
            // const data= JSON.parse(results[1]);
             //const data = results[0];
-            console.log(results[0]);
-            console.log(results[1]);
-            console.log(results[2]);
+            // console.log(results[0]);
+            // console.log(results[1]);
+            // console.log(results[2]);
             //res.send(data);
-            at_solve_count = parseInt(results[1]);
-            at_rating = parseInt(results[2]);
+            g_at_solve_count = parseInt(results[1]);
+            g_at_rating = parseInt(results[2]);
             //console.log('solved_at',at_solve_count+1000);
             //console.log('rating_at',at_rating+1000);
-            points += at_solve_count + at_rating;
-            console.log('from atcoder: ',points)
+            points += g_at_solve_count + g_at_rating;
+            console.log('from atcoder: ',points);
         }
     })
 
@@ -831,6 +893,9 @@ router.post('/signup_with_Data', (req, res) => {
      });
     ///else end
     }
+    });
+
+    
 });
 
 
@@ -1007,7 +1072,7 @@ router.post('/problem_added', (req, res) => {
         res.end("Need to login first");
 
     else{
-    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    const sql = `select handle,rating,solve_count from table_codeforces where id='${id_now}'`;
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
@@ -1026,7 +1091,7 @@ router.post('/problem_added', (req, res) => {
 
   
 
-    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    const sql1 = `select handle,rating,solve_count from table_atcoder where id='${id_now}'`;
     let query1 = db.query(sql1, (err, rows) => {
         if (err) throw err;
 
