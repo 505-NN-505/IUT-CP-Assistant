@@ -8,6 +8,7 @@
 }
 
 body, input{
+
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -15,6 +16,7 @@ body, input{
 
 
 .header {
+
     position: relative;
      background-color:  #173F5F;
 }
@@ -62,6 +64,7 @@ nav img{
 }
 
 body {
+
     color: #797979;
     
     background: #f1f2f7; 
@@ -266,8 +269,13 @@ body {
     width: 60%;
 }
 
+.bio-desk img{
+    width: 75px;
+}
+
 .bio-desk .row{
-    justify-content: space-between;
+    justify-content:space-between;
+   
 }
 .bio-desk h4 {
     font-size: 15px;
@@ -279,7 +287,10 @@ body {
 }
 
 .bio-desk h4.red {
-    color: #e26b7f;
+    /* color: #e26b7f; */
+    color: green;
+
+
 }
 
 .bio-desk h4.green {
@@ -383,10 +394,12 @@ ul.summary-list > li:last-child  {
 
 .activity.terques span {
     background: #8dd7d6;
+  
 }
 
 .activity.terques h4 {
     color: #8dd7d6;
+    
 }
 .activity.purple span {
     background: #b984dc;
