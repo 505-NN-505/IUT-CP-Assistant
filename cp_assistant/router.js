@@ -16,6 +16,11 @@ let name_now = "-1";
 let points=0;
 let from_sign_up = 0;
 
+let cf_rating=0;
+let cf_solve_count=0;
+let at_rating=0;
+let at_solve_count=0;
+
 var ids = []; 
 var updated_points = []; 
 
@@ -31,21 +36,6 @@ router.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json 
 router.use(bodyParser.json())
 
-
-
-
-
-// const pool = mysql.createPool({
-//     host: 'localhost',
-//     user: 'root',
-//     password: '',
-//     database: 'iut_cp_assistant'
-// });
-
-// pool.getConnection((err,connection)=> {
-// if(err)throw err;
-// console.log('Connected as ID '+connection.threadId);
-// })
 
 const db = mysql2.createConnection({
     host: 'localhost',
@@ -63,25 +53,6 @@ db.connect((err) => {
 });
 
 
-const  credential = {
-    ID : 123,
-    password : "admin123"
-}
-
-// login user
-// router.post('/login', (req, res)=>{
-//     const sql = `select password from user_table where id='${req.body.student_ID}'`;
-//     let query = db.query(sql, (err, rows) => {
-//         if (err) throw err;
-
-//         //res.send(results);
-//         // res.render("doctors", {
-//         //     title: "Doctor",
-//         //     data: results,
-//         // })
-
-//         console.log('The data from user table: \n', rows);
-// });
 
 
 router.post('/login', (req, res)=>{
@@ -96,6 +67,13 @@ router.post('/login', (req, res)=>{
             }
             console.log(results);
           });
+          
+          
+          from_sign_up = 0;
+          let cf_rating=0;
+          let cf_solve_count=0;
+          let at_rating=0;
+          let at_solve_count=0;
     }
 
     ///update scrappers
@@ -131,11 +109,7 @@ router.post('/login', (req, res)=>{
             }
            // console.log("innnnn");
         
-            let cf_rating=0;
-            let cf_solve_count=0;
-        
-            let at_rating=0;
-            let at_solve_count=0;
+            
 
             let new_points = 0;
             
@@ -306,13 +280,6 @@ router.post('/login', (req, res)=>{
     const sql = `select password from user_table where id='${req.body.student_ID}'`;
     let query = db.query(sql, (err, rows) => {
 
-        //res.send(results);
-        // res.render("doctors", {
-        //     title: "Doctor",
-        //     data: results,
-        // })
-        
-        //console.log(rows[0].password);
        
         if(rows.length==0){
             // res.end("User do not exist");
@@ -366,11 +333,6 @@ router.get('/profile', (req, res)=>{
     let query = db.query(sql, (err, rows) => {
         if (err) throw err;
 
-        //res.send(results);
-        // res.render("doctors", {
-        //     title: "Doctor",
-        //     data: results,
-        // })
         console.log('cf_rating: ', rows[0].rating);
         console.log('cf_rank: ', rows[0].rank);
         console.log('cf_solve_count: ', rows[0].solve_count);
