@@ -408,6 +408,15 @@ router.get('/profile', (req, res)=>{
     }
 })
 
+
+router.get('/del_profile/:url', (req, res)=>{
+
+    const {url} =req.params;
+    console.log(url);
+    
+})
+
+
 router.get('/to_profile/:id', (req, res)=>{
 
     const {id} =req.params;

@@ -40,7 +40,7 @@
           <div class="panel">
               <div class="user-heading round">
                   <a href="#">
-                      <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                      <img src="/images/logo.png" alt="">
                   </a>
                   <h1>
                     <!-- Shows student id below the user photo -->
@@ -78,11 +78,6 @@
                             
                         </div>                    
                     </div>
-                    <div class="row">
-                        <div class="bio-row">
-                            <p>Vjudge Handle: dummyHandle</p>
-                        </div>                    
-                    </div>
                  </div>
           <div>
               <div class="row">
@@ -118,26 +113,58 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-md-6">
-                      <div class="panel">
-                          <div class="panel-body">
-                              <!-- <div class="bio-chart">
-                                  <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="75" data-fgcolor="#96be4b" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(150, 190, 75); padding: 0px; -webkit-appearance: none; background: none;"></div>
-                              </div> -->
-                              <div class="bio-desk">
-                                  <h4 class="green">Vjudge</h4>
-                                  <p>Rating : dummy data </p>
-                                  <p>Rank : dummy data </p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
               </div>
           </div>
       </div>
     
     </div>
     </form>
+    <p><h3>Problems</h3></p>
+    <div class="container">
+        <table>
+            <!-- <thead class="head">
+                <tr>
+                    <th>Problems</th>
+                </tr>
+            </thead> -->
+            <tbody>
+                <!-- <tr>
+                    <td>Cell 1</td>
+                    <td>Cell 2</td>
+                    <td>Cell 3</td>
+                    <td>Cell 4</td>
+                    <td>Cell 5</td>
+                </tr> -->
+                <tr>
+                    
+                        <%
+                        if(sampleData.length>0){
+                            sampleData.forEach(function (data){
+                        %> 
+                    
+                        <td> 
+                            <tr> <%= data.url %> </tr>
+                            <tr><a href="/route/del_profile/<%= data.url %>"><i class="fa fa-trash" aria-hidden="true"></i></a></tr>
+                            <tr> | </tr>
+                        </td>
+                                
+                    
+                </tr>
+                    <%            
+                        });
+                    }
+                    else{
+                    %>
+                        <tr>
+                            <td colspan="2">No User Found</td>
+                        </tr>
+                    <%
+                    }
+                    %>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <%}else {%>
         <p>User Not Found!</p>
