@@ -143,9 +143,9 @@
                         %> 
                     
                         <td> 
-                            <tr><a href="<%= data.url %>"target="_blank" rel="noopener noreferrer"> <%= data.problem_name%></a></tr>
-                            <!-- <tr><%= data.problem_name%> </tr> -->
-                            <tr><a href="/route/del_profile/<%=data.url%>"><i class="fa fa-trash" aria-hidden="true"></i></a></tr>
+                            <!-- <tr><a href="/route/del_profile/<%= data.url %>"> <%= data.problem_name %></a><%= data.problem_name %> </tr> -->
+                            <tr><%= data.problem_name%> </tr>
+                            <tr><a href="/route/del_profile/<%= data.problem_name %>"><i class="fa fa-trash" aria-hidden="true"></i></a></tr>
                             <tr> | </tr>
                         </td>
                                 
