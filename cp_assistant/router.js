@@ -65,7 +65,7 @@ router.post('/login', (req, res)=>{
             if (err) {
                 throw err;
             }
-            console.log(results);
+            //console.log(results);
           });
           
           
@@ -85,8 +85,8 @@ router.post('/login', (req, res)=>{
         if (err) {
             throw err;
         }
-        console.log(results);
-        console.log(results.length);
+       // console.log(results);
+        //console.log(results.length);
 
         // for (let i = 0; i < results.length; i++) {
         //     ids.push(results[i].id);
@@ -409,10 +409,106 @@ router.get('/profile', (req, res)=>{
 })
 
 
-router.get('/del_profile/:url', (req, res)=>{
+router.get('/del_profile/:name', (req, res)=>{
 
-    const {url} =req.params;
-    console.log(url);
+    const {name} =req.params;
+    console.log('doneeeeee',name);
+
+    // let cfHandle;
+    // let cfRating;
+    // let cfRank;
+    // let cfSolveCount;
+    // let cfHandleLink = "codeforces.com/profile/";
+
+    // let atCoderHandle;
+    // let atCoderRating;
+    // let atCoderRank;
+    // let atCoderSolveCount;
+    // let atcoderHandleLink = "atcoder.jp/users/";
+
+
+
+    // if(id_now=="-1")
+    //     res.end("Need to login first");
+
+    // else{
+    // const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    // let query = db.query(sql, (err, rows) => {
+    //     if (err) throw err;
+
+    //     console.log('cf_rating: ', rows[0].rating);
+    //     console.log('cf_rank: ', rows[0].rank);
+    //     console.log('cf_solve_count: ', rows[0].solve_count);
+        
+    //     cfHandle = rows[0].handle;
+    //     cfRating =  rows[0].rating;
+    //     cfRank =  rows[0].rank;
+    //     cfSolveCount = rows[0].solve_count;
+    //     cfHandleLink  += rows[0].handle;
+
+    //     console.log(cfHandleLink);
+    // });
+
+    // const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    // let query1 = db.query(sql1, (err, rows) => {
+    //     if (err) throw err;
+
+    //     //res.send(results);
+    //     // res.render("doctors", {
+    //     //     title: "Doctor",
+    //     //     data: results,
+    //     // })
+    //     console.log('atcoder_rating: ', rows[0].rating);
+    //     console.log('atcoder_rank: ', rows[0].rank);
+    //     console.log('atcoder_solve_count: ', rows[0].solve_count);
+
+    //     atCoderHandle = rows[0].handle;
+    //     atCoderRating =  rows[0].rating;
+    //     atCoderRank =  rows[0].rank;
+    //     atCoderSolveCount = rows[0].solve_count;
+    //     atcoderHandleLink  += rows[0].handle;
+
+    //     console.log(atcoderHandleLink);
+        
+    // });
+
+    // db.execute(
+    //     // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
+    //     // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+    //     'delete from `problems_table` where `url`=(?)',
+    //     [url], 
+    //     (err, results) => {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     else{
+    //         // res.render('standings',{
+    //         //     title: 'Standings',
+    //         //     sampleData:results,
+    //         //  });
+
+    //         console.log(results)
+    //         res.render('profile' , {
+    //             userID: id_now,
+    //             cfHandle,
+    //             cfRating,
+    //             cfRank,
+    //             cfSolveCount,
+    //             cfHandleLink,
+    //             atCoderHandle,
+    //             atCoderRating,
+    //             atCoderRank,
+    //             atCoderSolveCount,
+    //             atcoderHandleLink,
+    //             sampleData:results,
+    //          });
+    //     }
+        
+        
+    //     // console.log(results);
+    //   });
+
+    // }
     
 })
 
@@ -838,14 +934,28 @@ router.post('/problem_added', (req, res) => {
         //     console.log(t_results);
         //     });
 
-       
-        const sql3 = `INSERT INTO problems_table (url,id,problem_name) VALUES ('${req.body.problem}', '${id_now}', '${temp_text}')`;
-        let query = db.query(sql3, (err, rows) => {
+            
+        let sql_t = `select * from problems_table where url='${req.body.problem}'`;
+        let query_t = db.query(sql_t, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        //res.send(results);
+        // res.render("doctors", {
+        //     title: "Doctor",
+        //     data: results,
+        // })
+        if(results.length==0){
+            const sql3 = `INSERT INTO problems_table (url,id,problem_name) VALUES ('${req.body.problem}', '${id_now}', '${temp_text}')`;
+            let query = db.query(sql3, (err, rows) => {
             if (err) throw err;
     
             console.log('The data from user table: \n', rows);
     
         });
+        }
+    });
+
+        
         }
     })
 
