@@ -684,7 +684,7 @@ router.get('/logout', (req, res) => {
 router.get('/cfstanding', (req, res) => {
     
 
-    const sql = `select rating,id, handle, ROW_NUMBER() OVER (order by rating desc) as rank from table_codeforces `;
+    const sql = `select id, handle,rating,solve_count, ROW_NUMBER() OVER (order by rating desc) as rank from table_codeforces `;
     let query = db.query(sql, (err, rows) => {
         if(err){
             throw err;
@@ -702,7 +702,7 @@ router.get('/cfstanding', (req, res) => {
 
 router.get('/atcoderstanding', (req, res) => {
     
-    const sql = `select id, handle, ROW_NUMBER() OVER (order by rating desc) as number from table_atcoder `;
+    const sql = `select id, handle, rating,solve_count, ROW_NUMBER() OVER (order by rating desc) as number from table_atcoder `;
 
     // const sql = `select rank,id, handle from table_atcoder order by rating desc`;
     let query = db.query(sql, (err, rows) => {
