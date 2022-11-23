@@ -88,186 +88,186 @@ router.post('/login', (req, res)=>{
         console.log(results);
         console.log(results.length);
 
-        for (let i = 0; i < results.length; i++) {
-            ids.push(results[i].id);
+        // for (let i = 0; i < results.length; i++) {
+        //     ids.push(results[i].id);
 
-            ///scrappers for updating
-            let a=0,b=0,c=0,d=0;
+        //     ///scrappers for updating
+        //     let a=0,b=0,c=0,d=0;
 
-            console.log("iddddd",results[i].id)
-            console.log("cffffff",results[i].handle_codeforces)
-            console.log("atttttt",results[i].handle_atcoder)
+        //     console.log("iddddd",results[i].id)
+        //     console.log("cffffff",results[i].handle_codeforces)
+        //     console.log("atttttt",results[i].handle_atcoder)
 
-            let options = {
+        //     let options = {
         
-                args:[results[i].handle_codeforces]
-            }
+        //         args:[results[i].handle_codeforces]
+        //     }
         
-            let at_options = {
+        //     let at_options = {
                 
-                args:[results[i].handle_atcoder]
-            }
-           // console.log("innnnn");
+        //         args:[results[i].handle_atcoder]
+        //     }
+        //    // console.log("innnnn");
         
             
 
-            let new_points = 0;
+        //     let new_points = 0;
             
         
-            PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
-                function resolveAfter2Seconds() {
-                    return new Promise(resolve => {
-                      setTimeout(() => {
-                        resolve('resolved');
-                      }, 5000);
-                    });
-                  }
+        //     PythonShell.run("scrapers/codeforces.py", options, function(err, results) {
+        //         // function resolveAfter2Seconds() {
+        //         //     return new Promise(resolve => {
+        //         //       setTimeout(() => {
+        //         //         resolve('resolved');
+        //         //       }, 5000);
+        //         //     });
+        //         //   }
                   
-                  async function asyncCall() {
-                    console.log('calling');
-                    const result = await resolveAfter2Seconds();
-                    console.log(result);
-                    // expected output: "resolved"
-                  }
+        //         //   async function asyncCall() {
+        //         //     console.log('calling');
+        //         //     const result = await resolveAfter2Seconds();
+        //         //     console.log(result);
+        //         //     // expected output: "resolved"
+        //         //   }
                   
-                  asyncCall();
-                a=1;
-                if (err) {
-                    console.log("ERRROR!");
-                    console.log(err);
-                } else {
-                    console.log("LENGTH IS: ", results.length)
-                    const data= JSON.parse(results[0]);
-                    //const data = results[0];
-                   //console.log(data.titlePhoto);
-                   // res.send(data);
-                   // console.log(results);
-                   /// //console.log("rank: ",data.rank);
-                   console.log("rating: ",parseInt(data));
-                     cf_rating = parseInt(data);
+        //         //   asyncCall();
+        //         a=1;
+        //         if (err) {
+        //             console.log("ERRROR!");
+        //             console.log(err);
+        //         } else {
+        //             console.log("LENGTH IS: ", results.length)
+        //             const data= JSON.parse(results[0]);
+        //             //const data = results[0];
+        //            //console.log(data.titlePhoto);
+        //            // res.send(data);
+        //            // console.log(results);
+        //            /// //console.log("rank: ",data.rank);
+        //            console.log("rating: ",parseInt(data));
+        //              cf_rating = parseInt(data);
 
                      
-                }
+        //         }
 
-                PythonShell.run("scrapers/main.py", options, function(err, results) {
+        //         PythonShell.run("scrapers/main.py", options, function(err, results) {
                     
-                    function resolveAfter2Seconds() {
-                        return new Promise(resolve => {
-                          setTimeout(() => {
-                            resolve('resolved');
-                          }, 5000);
-                        });
-                      }
+        //             // function resolveAfter2Seconds() {
+        //             //     return new Promise(resolve => {
+        //             //       setTimeout(() => {
+        //             //         resolve('resolved');
+        //             //       }, 5000);
+        //             //     });
+        //             //   }
                       
-                      async function asyncCall() {
-                        console.log('calling');
-                        const result = await resolveAfter2Seconds();
-                        console.log(result);
-                        // expected output: "resolved"
-                      }
+        //             //   async function asyncCall() {
+        //             //     console.log('calling');
+        //             //     const result = await resolveAfter2Seconds();
+        //             //     console.log(result);
+        //             //     // expected output: "resolved"
+        //             //   }
                       
-                      asyncCall();
+        //             //   asyncCall();
 
                     
-                      b=1;
-                    if (err) {
-                        console.log("ERRROR!");
-                        console.log(err);
-                    } else {
-                        console.log("LENGTH IS: ", results.length)
-                        const data= JSON.parse(results[0]);
-                        //const data = results[0];
-                       //console.log(data.titlePhoto);
-                       // res.send(data);
-                       // console.log(results);
-                        // console.log("rank: ",data.rank);
-                         console.log("sc: ",parseInt(data));
-                        cf_solve_count=parseInt(data);
-                        //console.log(rating);
-                         new_points += cf_rating+cf_solve_count;
-                         console.log('pointssss from cf',new_points,i);
+        //               b=1;
+        //             if (err) {
+        //                 console.log("ERRROR!");
+        //                 console.log(err);
+        //             } else {
+        //                 console.log("LENGTH IS: ", results.length)
+        //                 const data= JSON.parse(results[0]);
+        //                 //const data = results[0];
+        //                //console.log(data.titlePhoto);
+        //                // res.send(data);
+        //                // console.log(results);
+        //                 // console.log("rank: ",data.rank);
+        //                  console.log("sc: ",parseInt(data));
+        //                 cf_solve_count=parseInt(data);
+        //                 //console.log(rating);
+        //                  new_points += cf_rating+cf_solve_count;
+        //                  console.log('pointssss from cf',new_points,i);
     
                       
                           
                         
-                    }
+        //             }
 
-                    PythonShell.run("scrapers/atcoder_stat.py", at_options, function(err, results) {
+        //             PythonShell.run("scrapers/atcoder_stat.py", at_options, function(err, results) {
                         
-                        function resolveAfter2Seconds() {
-                            return new Promise(resolve => {
-                              setTimeout(() => {
-                                resolve('resolved');
-                              }, 5000);
-                            });
-                          }
+        //                 // function resolveAfter2Seconds() {
+        //                 //     return new Promise(resolve => {
+        //                 //       setTimeout(() => {
+        //                 //         resolve('resolved');
+        //                 //       }, 5000);
+        //                 //     });
+        //                 //   }
                           
-                          async function asyncCall() {
-                            console.log('calling');
-                            const result = await resolveAfter2Seconds();
-                            console.log(result);
-                            // expected output: "resolved"
-                          }
+        //                 //   async function asyncCall() {
+        //                 //     console.log('calling');
+        //                 //     const result = await resolveAfter2Seconds();
+        //                 //     console.log(result);
+        //                 //     // expected output: "resolved"
+        //                 //   }
                           
-                          asyncCall();
+        //                 //   asyncCall();
 
         
-                        c=1;
-                        if (err) {
-                            console.log("ERRROR!");
-                            console.log(err);
-                        } else {
-                            console.log("LENGTH IS atcoder: ", results.length)
-                           // const data= JSON.parse(results[1]);
-                            //const data = results[0];
-                            console.log(results[0]);
-                            console.log(results[1]);
-                            console.log(results[2]);
-                            //res.send(data);
-                            at_solve_count = parseInt(results[1]);
-                            at_rating = parseInt(results[2]);
-                            //console.log('solved_at',at_solve_count+1000);
-                            //console.log('rating_at',at_rating+1000);
-                            new_points += at_solve_count + at_rating;
-                            console.log('from atcoder: ',new_points,i)
+        //                 c=1;
+        //                 if (err) {
+        //                     console.log("ERRROR!");
+        //                     console.log(err);
+        //                 } else {
+        //                     console.log("LENGTH IS atcoder: ", results.length)
+        //                    // const data= JSON.parse(results[1]);
+        //                     //const data = results[0];
+        //                     console.log(results[0]);
+        //                     console.log(results[1]);
+        //                     console.log(results[2]);
+        //                     //res.send(data);
+        //                     at_solve_count = parseInt(results[1]);
+        //                     at_rating = parseInt(results[2]);
+        //                     //console.log('solved_at',at_solve_count+1000);
+        //                     //console.log('rating_at',at_rating+1000);
+        //                     new_points += at_solve_count + at_rating;
+        //                     console.log('from atcoder: ',new_points,i)
         
-                            updated_points.push(new_points);
-                            console.log(updated_points);
+        //                     updated_points.push(new_points);
+        //                     console.log(updated_points);
                             
-                            //
+        //                     //
 
-                        }
-                    })
-                })
-            })
+        //                 }
+        //             })
+        //         })
+        //     })
         
            
 
-            // let count = 0;
+        //     // let count = 0;
   
-            // const intervalId = setInterval(() => {
-            //     if(a==1 && b==1 && c==1 && d==0){
-            //         updated_points.push(new_points);
-            //         d=1;
-            //     }
-            //     count++;
+        //     // const intervalId = setInterval(() => {
+        //     //     if(a==1 && b==1 && c==1 && d==0){
+        //     //         updated_points.push(new_points);
+        //     //         d=1;
+        //     //     }
+        //     //     count++;
                   
-            //     if (count === 10) {
-            //         console.log('Clearing the interval id after 5 executions');
-            //         clearInterval(intervalId);
-            //       }
-            //     }, 1000);
+        //     //     if (count === 10) {
+        //     //         console.log('Clearing the interval id after 5 executions');
+        //     //         clearInterval(intervalId);
+        //     //       }
+        //     //     }, 1000);
 
             
-            //   if(a==1 && b==1 && c==1 && d==0){
-            //             updated_points.push(new_points);
-            //             d=1;
-            //         }
-            // updated_points.push(new_points);
-            // console.log(updated_points);
+        //     //   if(a==1 && b==1 && c==1 && d==0){
+        //     //             updated_points.push(new_points);
+        //     //             d=1;
+        //     //         }
+        //     // updated_points.push(new_points);
+        //     // console.log(updated_points);
 
 
-          }
+        //   }
 
 
       });
@@ -366,23 +366,45 @@ router.get('/profile', (req, res)=>{
         atcoderHandleLink  += rows[0].handle;
 
         console.log(atcoderHandleLink);
-
-
-         res.render('profile' , {
-            userID: id_now,
-            cfHandle,
-            cfRating,
-            cfRank,
-            cfSolveCount,
-            cfHandleLink,
-            atCoderHandle,
-            atCoderRating,
-            atCoderRank,
-            atCoderSolveCount,
-            atcoderHandleLink,
-         });
         
     });
+
+    db.execute(
+        // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
+        // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+        'select `url` from `problems_table` where `id`=(?)',
+        [id_now], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        else{
+            // res.render('standings',{
+            //     title: 'Standings',
+            //     sampleData:results,
+            //  });
+
+            console.log(results)
+            res.render('profile' , {
+                userID: id_now,
+                cfHandle,
+                cfRating,
+                cfRank,
+                cfSolveCount,
+                cfHandleLink,
+                atCoderHandle,
+                atCoderRating,
+                atCoderRank,
+                atCoderSolveCount,
+                atcoderHandleLink,
+                sampleData:results,
+             });
+        }
+        
+        
+        // console.log(results);
+      });
+
     }
 })
 
@@ -771,6 +793,110 @@ router.get('/add_problem', (req, res) => {
     res.render('add_problem')
 })
 
+router.post('/problem_added', (req, res) => {
 
+    console.log(req.body.problem)
+    let cfHandle;
+    let cfRating;
+    let cfRank;
+    let cfSolveCount;
+    let cfHandleLink = "codeforces.com/profile/";
+
+    let atCoderHandle;
+    let atCoderRating;
+    let atCoderRank;
+    let atCoderSolveCount;
+    let atcoderHandleLink = "atcoder.jp/users/";
+
+
+
+    if(id_now=="-1")
+        res.end("Need to login first");
+
+    else{
+    const sql = `select handle,rating,rank,solve_count from table_codeforces where id='${id_now}'`;
+    let query = db.query(sql, (err, rows) => {
+        if (err) throw err;
+
+        // console.log('cf_rating: ', rows[0].rating);
+        // console.log('cf_rank: ', rows[0].rank);
+        // console.log('cf_solve_count: ', rows[0].solve_count);
+        
+        cfHandle = rows[0].handle;
+        cfRating =  rows[0].rating;
+        cfRank =  rows[0].rank;
+        cfSolveCount = rows[0].solve_count;
+        cfHandleLink  += rows[0].handle;
+
+        // console.log(cfHandleLink);
+    });
+
+  
+
+    const sql1 = `select handle,rating,rank,solve_count from table_atcoder where id='${id_now}'`;
+    let query1 = db.query(sql1, (err, rows) => {
+        if (err) throw err;
+
+        //res.send(results);
+        // res.render("doctors", {
+        //     title: "Doctor",
+        //     data: results,
+        // })
+        // console.log('atcoder_rating: ', rows[0].rating);
+        // console.log('atcoder_rank: ', rows[0].rank);
+        // console.log('atcoder_solve_count: ', rows[0].solve_count);
+
+        atCoderHandle = rows[0].handle;
+        atCoderRating =  rows[0].rating;
+        atCoderRank =  rows[0].rank;
+        atCoderSolveCount = rows[0].solve_count;
+        atcoderHandleLink  += rows[0].handle;
+
+        console.log(atcoderHandleLink);
+
+
+
+         
+        
+    });
+
+    db.execute(
+        // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
+        // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+        'select `url` from `problems_table` where `id`=(?)',
+        [id_now], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        else{
+            // res.render('standings',{
+            //     title: 'Standings',
+            //     sampleData:results,
+            //  });
+
+            res.render('profile' , {
+                userID: id_now,
+                cfHandle,
+                cfRating,
+                cfRank,
+                cfSolveCount,
+                cfHandleLink,
+                atCoderHandle,
+                atCoderRating,
+                atCoderRank,
+                atCoderSolveCount,
+                atcoderHandleLink,
+                sampleData:results,
+             });
+        }
+        
+        
+        console.log(results);
+      });
+
+   
+    }
+})
 
 module.exports = router;

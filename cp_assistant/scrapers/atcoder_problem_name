@@ -1,0 +1,18 @@
+import requests
+import json
+from bs4 import BeautifulSoup
+import sys
+
+url = sys.argv[1]
+
+def atcoder_scraper(problem_url):
+	problem_url = input()
+	page = requests.get(problem_url)
+	soup = BeautifulSoup(page.content, features='lxml')
+	titleList = soup.find_all('title')
+	# print(page.history)
+	
+	print(titleList[0].get_text())
+
+#url = "https://codeforces.com/problemset/problem/71/A"
+atcoder_scraper(url)
