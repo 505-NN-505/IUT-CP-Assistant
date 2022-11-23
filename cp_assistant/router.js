@@ -522,6 +522,8 @@ router.get('/signup', (req, res) => {
      });
 })
 
+
+
 router.get('/logout', (req, res) => {
    
     res.render('base')
@@ -801,6 +803,12 @@ router.get('/aftersignup', (req, res) => {
 
 res.render('base')
 })
+
+router.get('/add_problem', (req, res) => {
+
+    res.render('add_problem')
+})
+
 
 
 module.exports = router;

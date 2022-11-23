@@ -13,6 +13,13 @@ body, input{
 
 
 
+a{
+	text-decoration: none;
+	color: #fff;
+	text-decoration: underline;
+	
+} 
+
 
 .header {
     position: relative;
@@ -91,7 +98,7 @@ h1{
 }
 
 table {
-	width: 800px;
+	width: 1300px;
 	border-collapse: collapse;
 	overflow: hidden;
 	box-shadow: 0 0 20px rgba(0,0,0,0.1);
