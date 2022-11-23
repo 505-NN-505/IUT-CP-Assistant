@@ -61,6 +61,7 @@ db.connect((err) => {
 
 router.post('/login', (req, res)=>{
 
+    id_now = req.body.student_ID;
     if(from_sign_up==1){
 
         db.execute(
@@ -324,7 +325,7 @@ router.post('/login', (req, res)=>{
         }
         else{
         console.log('The data from user table: \n', rows);
-        id_now = req.body.student_ID;
+        
         console.log(id_now);
         // res.render('base_logout');
 
@@ -643,7 +644,7 @@ router.get('/to_profile/:id', (req, res)=>{
 
             console.log(results)
             res.render('profile' , {
-                userID: id_now,
+                userID: text,
                 cfHandle,
                 cfRating,
                 cfRank,
@@ -1014,9 +1015,23 @@ router.get('/edit_password', (req, res) => {
 })
 
 router.post('/after_edit_password', (req, res) => {
-    res.render('base_logout' , {
-        userID: id_now,
-     });
+
+    db.execute(
+        'update `user_table` set `password`=(?) where `id`=(?)',
+        [req.body.pass3,id_now], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        else{
+            res.render('base_logout' , {
+                userID: id_now,
+             });
+        }
+           
+      });
+
+    
 })
 
 router.post('/problem_added', (req, res) => {
@@ -1081,6 +1096,112 @@ router.post('/problem_added', (req, res) => {
     })
 
     console.log(req.body.problem)
+    let cfHandle;
+    let cfRating;
+    let cfRank;
+    let cfSolveCount;
+    let cfHandleLink = "codeforces.com/profile/";
+
+    let atCoderHandle;
+    let atCoderRating;
+    let atCoderRank;
+    let atCoderSolveCount;
+    let atcoderHandleLink = "atcoder.jp/users/";
+
+
+
+    if(id_now=="-1")
+        res.end("Need to login first");
+
+    else{
+    const sql = `select handle,rating,solve_count from table_codeforces where id='${id_now}'`;
+    let query = db.query(sql, (err, rows) => {
+        if (err) throw err;
+
+        // console.log('cf_rating: ', rows[0].rating);
+        // console.log('cf_rank: ', rows[0].rank);
+        // console.log('cf_solve_count: ', rows[0].solve_count);
+        
+        cfHandle = rows[0].handle;
+        cfRating =  rows[0].rating;
+        cfRank =  rows[0].rank;
+        cfSolveCount = rows[0].solve_count;
+        cfHandleLink  += rows[0].handle;
+
+        // console.log(cfHandleLink);
+    });
+
+  
+
+    const sql1 = `select handle,rating,solve_count from table_atcoder where id='${id_now}'`;
+    let query1 = db.query(sql1, (err, rows) => {
+        if (err) throw err;
+
+        //res.send(results);
+        // res.render("doctors", {
+        //     title: "Doctor",
+        //     data: results,
+        // })
+        // console.log('atcoder_rating: ', rows[0].rating);
+        // console.log('atcoder_rank: ', rows[0].rank);
+        // console.log('atcoder_solve_count: ', rows[0].solve_count);
+
+        atCoderHandle = rows[0].handle;
+        atCoderRating =  rows[0].rating;
+        atCoderRank =  rows[0].rank;
+        atCoderSolveCount = rows[0].solve_count;
+        atcoderHandleLink  += rows[0].handle;
+
+        console.log(atcoderHandleLink);
+
+
+
+         
+        
+    });
+
+    db.execute(
+        // 'select `id`,`name`,`points`, ROW_NUMBER() OVER (order by points desc) as rank  from `standings',
+        // 'select `id`,`name`,`points`,  from `standings` order by `points` desc',
+        'select `url`,`problem_name` from `problems_table` where `id`=(?)',
+        [id_now], 
+        (err, results) => {
+        if (err) {
+            throw err;
+        }
+        else{
+            // res.render('standings',{
+            //     title: 'Standings',
+            //     sampleData:results,
+            //  });
+
+            res.render('profile' , {
+                userID: id_now,
+                cfHandle,
+                cfRating,
+                cfRank,
+                cfSolveCount,
+                cfHandleLink,
+                atCoderHandle,
+                atCoderRating,
+                atCoderRank,
+                atCoderSolveCount,
+                atcoderHandleLink,
+                sampleData:results,
+             });
+        }
+        
+        
+        console.log(results);
+      });
+
+   
+    }
+})
+
+router.get('/cancel_problem', (req, res) => {
+
+    
     let cfHandle;
     let cfRating;
     let cfRank;
