@@ -409,9 +409,9 @@ router.get('/profile', (req, res)=>{
 })
 
 
-router.get('/del_profile/:url', (req, res)=>{
+router.get('/del_profile/*', (req, res)=>{
 
-    const {url} =req.params;
+    var {url} =req.params[0];
     console.log(url);
     
 })
