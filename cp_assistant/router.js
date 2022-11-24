@@ -691,6 +691,12 @@ router.get('/to_profile/:id', (req, res)=>{
 })
 
 
+router.get('/base_logout', (req, res) => {
+   
+    res.render('base_logout' , {
+        userID: id_now,
+     });
+})
 
 
 
@@ -737,8 +743,10 @@ router.get('/cfstanding', (req, res) => {
             throw err;
         }
         else{
+            console.log(id_now);
             res.render('cfstanding',{
                 title: 'CFStanding',
+                userID: id_now,
                 sampleData:rows,
         });
 
@@ -759,6 +767,7 @@ router.get('/atcoderstanding', (req, res) => {
         else{
             res.render('atcoderstanding',{
                 title: 'AtCODERStanding',
+                userID: id_now,
                 sampleData:rows,
         });
 
@@ -968,6 +977,7 @@ router.get('/standings', (req, res) => {
         else{
             res.render('standings',{
                 title: 'Standings',
+                userID: id_now,
                 sampleData:results,
              });
         }

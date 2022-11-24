@@ -14,10 +14,25 @@
             <div class="nav-links" id="navLinks">
                 <ul>
                     
-                    <li><a href="/route/logout">HOME</a></li>
+                    <!-- <li><a href="/route/base_logout">HOME</a></li> -->
+                    <% if(userID>-1) { %>
+
+                        <li><a href="/route/base_logout">HOME</a></li>
+                    <% }else { %>
+                        <!-- <li><a href="/route/homelogin">LOGIN</a></li> -->
+                        <li><a href="/route/logout">HOME</a></li>
+                    <%
+                    }%>
                     <li><a href="/route/standings">STANDING</a></li>
                     <!-- <li><a href="/route/all">VIEW ALL</a></li> -->
+                    
+                     <% if(userID>-1) { %>
+
                     <li><a href="/route/logout">LOGOUT</a></li>
+                    <% }else { %>
+                    <li><a href="/route/homelogin">LOGIN</a></li>
+                    <%}
+                    %>
                     <!-- <li><a href="">ABOUT</a></li> -->
                 </ul>
             </div>
