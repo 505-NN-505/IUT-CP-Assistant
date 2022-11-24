@@ -3,6 +3,7 @@ var bodyParser = require('body-parser')
 var router = express.Router();
 const mysql = require('mysql');
 const mysql2 = require('mysql2');
+const bcrypt = require("bcrypt");
 
 let {PythonShell} = require('python-shell');
 const { addListener } = require("nodemon");
@@ -15,6 +16,7 @@ let id_now = "-1";
 let name_now = "-1";
 let points=0;
 let from_sign_up = 0;
+let done=0
 
 let g_cf_rating=0;
 let g_cf_solve_count=0;
@@ -61,9 +63,21 @@ db.connect((err) => {
 
 router.post('/login', (req, res)=>{
 
-    id_now = req.body.student_ID;
-    if(from_sign_up==1){
+   ///let match=""
+    const sqlr = `select password from user_table where id='${req.body.student_ID}'`;
+    let queryr = db.query(sqlr, (err, rows) => {
 
+        
+        /// match = bcrypt.compare(req.body.password, rows[0].password);
+        // console.log("matchhh",match)
+
+    });
+
+    id_now = req.body.student_ID;
+    
+    if(from_sign_up==1 && done==0){
+
+        done=1
         db.execute(
             'INSERT INTO `table_codeforces` (`id`, `handle`, `rating`,`solve_count`) VALUES (?, ?, ?,?)',
             [req.body.student_ID, g_at_handle, g_at_rating,g_at_solve_count], 
@@ -102,6 +116,7 @@ router.post('/login', (req, res)=>{
         //   let cf_solve_count=0;
         //   let at_rating=0;
         //   let at_solve_count=0;
+        
     }
 
     ///update scrappers
@@ -306,9 +321,11 @@ router.post('/login', (req, res)=>{
     
 
     const sql = `select password from user_table where id='${req.body.student_ID}'`;
-    let query = db.query(sql, (err, rows) => {
+    let query = db.query(sql, async(err, rows) => {
 
-       
+        
+        //const match = bcrypt.compare(req.body.password, rows[0].password);
+
         if(rows.length==0){
             // res.end("User do not exist");
             res.render('login' , {
@@ -316,13 +333,20 @@ router.post('/login', (req, res)=>{
              });
         }
         
-        else if(req.body.password!=rows[0].password){
-            // res.end("Wrong Password");
-            res.render('login' , {
-                msg: 'Wrong Password!  Please enter the correct password.',
-             });
+        // else if(rows.length>0){
+        //     const match = await bcrypt.compare(req.body.password, rows[0].password);
+        //     if(req.body.password!=rows[0].password){
+        //         console.log(match)
+        //         console.log(req.body.password)
+        //         // res.end("Wrong Password");
+        //         res.render('login' , {
+        //             msg: 'Wrong Password!  Please enter the correct password.',
+        //          });
+    
+        //     }
+        // }
 
-        }
+      
         else{
         console.log('The data from user table: \n', rows);
         
@@ -413,6 +437,7 @@ router.get('/profile', (req, res)=>{
             //  });
 
             console.log(results)
+            from_sign_up=0;
             res.render('profile' , {
                 userID: id_now,
                 cfHandle,
@@ -813,6 +838,10 @@ router.post('/signup_with_Data', (req, res) => {
   
 
     else{
+    
+    const salt_rounds = 10
+    const hashPassword = bcrypt.hashSync(req.body.cpassword,salt_rounds);
+
     id_now = req.body.studentID;
     name_now = req.body.name;
 
